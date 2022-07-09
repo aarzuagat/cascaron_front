@@ -126,8 +126,8 @@ module.exports = function ( ctx ) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `org.love.com`,
-        short_name: `org.love.com`,
+        name: `Love`,
+        short_name: `Love`,
         description: `love app`,
         display: 'standalone',
         orientation: 'portrait',

@@ -2,7 +2,7 @@
   "name": "love",
   "version": "0.0.1",
   "description": "love app",
-  "productName": "org.love.app",
+  "productName": "Love",
   "author": "Arzuaga <aarzuagat@gmail.com>",
   "private": true,
   "scripts": {
