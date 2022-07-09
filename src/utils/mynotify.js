@@ -1,13 +1,13 @@
 import {Notify} from 'quasar'
 
-export function notify_p(message) {
+export function p(message) {
   Notify.create({
     message: `${message}`,
     type: 'positive',
   })
 }
 
-export function notify_n(message) {
+export function n(message) {
   Notify.create({
     message: `${message} `,
     type: 'negative',

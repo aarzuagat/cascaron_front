@@ -9,7 +9,7 @@
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 
 
-module.exports = function ( ctx ) {
+module.exports = function (ctx) {
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -22,7 +22,7 @@ module.exports = function ( ctx ) {
     // https://v1.quasar.dev/quasar-cli/boot-files
     boot: [
       'i18n',
-      'axios',
+      'notify',
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -66,9 +66,10 @@ module.exports = function ( ctx ) {
 
       // https://v1.quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpack (/* chain */) {},
+      chainWebpack(/* chain */) {
+      },
       env: {
-        VUE_APP_URL: ctx.dev ? "http://127.0.0.1:8000/api/" : "https://love.thecloudgroup.tech/api/",
+        api: ctx.dev ? "http://127.0.0.1:8000/api/" : "https://love.thecloudgroup.tech/api/",
       }
     },
 
@@ -87,7 +88,9 @@ module.exports = function ( ctx ) {
         plugins: [
           'LocalStorage',
           'SessionStorage',
-          'Meta'
+          'Meta',
+          'Notify'
+
         ]
       },
 
@@ -114,7 +117,7 @@ module.exports = function ( ctx ) {
 
     // animations: 'all', // --- includes all animations
     // https://v1.quasar.dev/options/animations
-    animations: [ 'fadeIn'],
+    animations: ['fadeIn'],
 
     // https://v1.quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
@@ -202,7 +205,7 @@ module.exports = function ( ctx ) {
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack (/* cfg */) {
+      extendWebpack(/* cfg */) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       }

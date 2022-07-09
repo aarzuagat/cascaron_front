@@ -1,15 +1,16 @@
 import axios from 'axios'
-import Vue from 'vue'
 import {Cookies} from "quasar";
 
 
 const axiosConfig = axios.create({
-  baseURL: process.env.VUE_APP_URL,
+  baseURL: process.env.api,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
     "Access-Control-Allow-Origin": "*",
   }
 });
+
+
 axiosConfig.interceptors.request.use(
   request => {
     request.metadata = {startTime: new Date()};
@@ -63,6 +64,6 @@ axiosConfig.interceptors.response.use(
   }
 );
 
-Vue.prototype.$axios = axiosConfig;
+// Vue.prototype.$axios = axiosConfig;
 
-// export default axiosConfig
+export default axiosConfig
