@@ -1,13 +1,15 @@
 <template>
-  <q-page class="">
-    <div class="row q-pa-lg" >
-      <div class="col-12 bg-dark-blue q-py-sm q-mx-xs">
+  <q-page >
+    <div class="row q-pa-lg">
+      <div class="col-12 bg-dark-blue q-py-sm  q-mr-lg">
         <div class="row items-center">
           <div class="col-4 q-pl-sm text-red text-bold">Listado de productos</div>
           <div class="col text-right q-mr-sm q-gutter-x-xs">
-            <q-btn color="red-5" class="q-px-sm" dense no-caps label="Crear nuevo producto" rounded/>
-            <q-btn color="red-5" class="q-px-sm" dense no-caps label="Vender producto" rounded/>
-            <q-btn color="red-5" class="q-px-sm" dense no-caps label="Buscar   producto" rounded/>
+            <div class="row items-center q-gutter-xs justify-end">
+              <ProductAdd/>
+              <q-btn color="red-5" class="q-px-sm" dense no-caps label="Vender producto" rounded/>
+              <q-btn color="red-5" class="q-px-sm" dense no-caps label="Buscar   producto" rounded/>
+            </div>
           </div>
         </div>
       </div>
@@ -20,9 +22,10 @@
 
 <script>
 import ProductList from "components/Product/ProductList";
+import ProductAdd from "components/Product/ProductAdd";
 
 export default {
   name: 'PageIndex',
-  components: {ProductList}
+  components: {ProductAdd, ProductList}
 }
 </script>

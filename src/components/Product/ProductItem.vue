@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row " :class="isInIndex?'q-mx-sm':''">
     <div class="col-12">
       <q-card flat bordered class="my-card bg-dark-blue" square>
         <q-card-section>
@@ -43,12 +43,20 @@ import {formatCurrency} from "src/utils/utils";
 
 export default {
   // name: 'ComponentName',
-  data() {
-    return {
-      lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  props: {
+    index: {type: Number}
+  },
+  computed: {
+    isInIndex() {
+      const candidates = [...Array(50).keys()].map((elem, index) => 1 + (3 * index))
+      return candidates.includes(this.index)
     }
   },
+  data() {
+    return {}
+  },
   methods: {
+
     formatterCurrency(amount) {
       return formatCurrency(amount)
     }
