@@ -5,18 +5,14 @@
         <q-btn dense flat round icon="menu" @click="setLeft"/>
       </div>
       <div class="col-2 q-pl-sm q-py-xs">
-          <img src="/icons/logo.png" style="max-height: 2rem">
+        <img src="/icons/logo.png" style="max-height: 2rem">
       </div>
       <div class="col">
         <ProductSearcher/>
       </div>
       <div class="col-6 q-pr-sm text-right">
-        <q-btn rounded dense color="negative" size="sm">
-          <q-avatar size="1.5rem">
-            <img src="/img/image.jpg" alt="foto perfil">
-          </q-avatar>
-        </q-btn>
-        Ramón Ela Mba
+        <ProfileLogo v-if="logged"/>
+        <LoginButton v-else/>
       </div>
     </div>
 
@@ -25,12 +21,19 @@
 
 <script>
 import ProductSearcher from "components/ProductSearcher";
+import ProfileLogo from "components/Auth/ProfileLogo";
+import LoginButton from "components/Auth/LoginButton";
+import {mapGetters} from "vuex";
 
 export default {
-  components: {ProductSearcher},
-  // name: 'ComponentName',
+  components: {LoginButton, ProfileLogo, ProductSearcher},
   props: {
-    side: {type: Boolean}
+    side: {type: Boolean},
+  },
+  computed: {
+    ...mapGetters({
+      logged: 'mystore/loggedIn'
+    })
   },
   data() {
     return {}

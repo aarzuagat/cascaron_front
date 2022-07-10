@@ -1,26 +1,15 @@
-import axios from "axios";
-
-const axiosConfig = axios.create({
-  baseURL: process.env.VUE_APP_URL,
-  headers: {
-    "Access-Control-Allow-Origin": "*"
-  }
-});
+import {objectToFormData} from "src/utils/utils";
+import axiosConfig from "boot/axios";
 
 export function loginUser(context, credentials) {
 
   return new Promise((resolve, reject) => {
-    let obj = new FormData();
-    obj.append('email', credentials.username);
-    obj.append('password', credentials.password);
-    axiosConfig.post('/auth/login', obj)
+    axiosConfig.post('/auth/login', objectToFormData(credentials))
       .then(response => {
-        context.dispatch('getDataUser', {
-          access: response.data.access_token
-        });
         context.commit('updateLocalStorage', {
           access: response.data.access_token
         });
+        context.dispatch('getDataUser', response.data.access_token);
         resolve(response)
       })
       .catch(err => {
@@ -40,10 +29,11 @@ export function logoutUser(context) {
 }
 
 
-export function getDataUser(context, data) {
+export function getDataUser(context, token) {
   return new Promise((resolve, reject) => {
-    axiosConfig.post('/auth/me' + '?token=' + data.access)
+    axiosConfig.post('/auth/me')
       .then(response => {
+        console.log('user es',response)
         context.commit('SetUser', response.data);
         resolve()
       })

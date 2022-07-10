@@ -15,7 +15,7 @@ axiosConfig.interceptors.request.use(
   request => {
     request.metadata = {startTime: new Date()};
     // if (request.url.includes('/login')) {
-    request.headers.authorization = 'Bearer ' + Cookies.get('love_token');
+    request.headers.authorization = 'Bearer ' + Cookies.get('lovetcgtoken');
     // }
     return request;
   },

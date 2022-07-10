@@ -1,8 +1,4 @@
-/*
-export function someGetter (state) {
-}
-*/
-
+import scrypto from "src/store/crypto";
 
 export function loggedIn(state) {
   return state.accessToken != null
@@ -11,7 +7,6 @@ export function loggedIn(state) {
 export function accessToken(state) {
   return state.accessToken
 }
-
 
 export function user(state) {
   return state.user
