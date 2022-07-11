@@ -70,7 +70,8 @@ module.exports = function (ctx) {
       chainWebpack(/* chain */) {
       },
       env: {
-        api: ctx.dev ? "http://127.0.0.1:8000/api/" : "https://love.thecloudgroup.tech/api/",
+        api: ctx.dev ? "http://127.0.0.1:8000/api/" : "https://lovebeta.thecloudgroup.tech/api/",
+        static: ctx.dev ? "http://127.0.0.1:8000/" : "https://lovebeta.thecloudgroup.tech/",
       }
     },
 

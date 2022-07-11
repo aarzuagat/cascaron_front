@@ -2,7 +2,7 @@
   <q-card-actions align="right">
     <q-btn
       label="Cancelar"
-      color="warning"
+      color="dark-blue"
       v-close-popup
       v-if="!lite"
       :no-caps="capittal_letters"
@@ -52,7 +52,7 @@ export default {
     },
     color: {
       type: String,
-      default: 'primary'
+      default: 'darkless-blue'
     }
   },
   data() {

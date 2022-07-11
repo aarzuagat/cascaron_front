@@ -20,7 +20,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .q-field__control-container,
 .q-field__native {
   padding-top: 8px !important;

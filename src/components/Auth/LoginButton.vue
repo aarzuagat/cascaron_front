@@ -2,9 +2,9 @@
   <div>
     <q-btn label="Iniciar sesión" color="dark" rounded @click="showing = true"/>
     <q-dialog v-model="showing">
-      <q-card flat :style="$q.screen.lt.md?`width: 90vw`:`width: 40vw`">
+      <q-card flat class="bg-dark-blue" :style="$q.screen.lt.md?`width: 90vw`:`width: 40vw`">
         <q-form @submit="submit">
-          <q-bar style="height: auto" class="text-white bg-primary q-py-sm">
+          <q-bar style="height: auto" class="text-white bg-darkless-blue q-py-sm">
             <div style="font-weight: 600">Iniciar sesión</div>
             <q-space/>
             <q-btn flat round dense icon="close" v-close-popup/>
@@ -15,12 +15,14 @@
               :rules="[$rules.required(), $rules.email()]"
               label="Email"
               dense
+              label-color="white"
             />
             <q-input
               v-model="user.password"
               :rules="[$rules.required(), $rules.minLength(8)]"
               label="Contraseña"
               dense
+              label-color="white"
             />
           </q-card-section>
           <FormCardAction custom-label="Autenticar"/>

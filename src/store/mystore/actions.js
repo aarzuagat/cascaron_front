@@ -33,7 +33,6 @@ export function getDataUser(context, token) {
   return new Promise((resolve, reject) => {
     axiosConfig.post('/auth/me')
       .then(response => {
-        console.log('user es',response)
         context.commit('SetUser', response.data);
         resolve()
       })

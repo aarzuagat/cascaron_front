@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import ProductSearcher from "components/ProductSearcher";
+import ProductSearcher from "components/Product/ProductSearcher";
 import ProfileLogo from "components/Auth/ProfileLogo";
 import LoginButton from "components/Auth/LoginButton";
 import {mapGetters} from "vuex";
