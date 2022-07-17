@@ -24,12 +24,14 @@
                       class="col-12 borderx"
                       :product-new="product"
                       @updated="$emit('updated')"
+                      :categories_all="categories_all"
                     />
                     <ProductDelete
                       v-if="user && user.role_id === 1"
                       class="col-12 borderx"
                       :product-new="product"
                       @updated="$emit('updated')"
+                      :categories_all="categories_all"
                     />
                     <sell-add v-if="user && user.role_id === 2" class="col-12 borderx"/>
                     <StockAdd v-if="user && user.role_id === 1" class="col-12 borderx"/>
@@ -59,6 +61,7 @@ export default {
   props: {
     index: {type: Number},
     product: {type: Object},
+    categories_all: {type:Array},
   },
   computed: {
     image() {

@@ -1,10 +1,10 @@
 <template>
   <div class="row items-start justify-start full-width">
-    <q-btn no-caps align="left" class="full-width" flat dense text-color="white" color="red"
+    <q-btn no-caps align="left" :class="liteVersion?'':`full-width`" flat dense text-color="white" color="red"
            @click="showing = true">
       <template v-slot:default>
         <q-icon name="mdi-trash-can" color="red" size="sm"/>
-        <span class="q-pl-sm">Eliminar producto</span>
+        <span class="q-pl-sm" v-if="!liteVersion">Eliminar producto</span>
       </template>
     </q-btn>
     <q-dialog ref="mymodal" v-model="showing">
@@ -37,7 +37,6 @@
     </q-dialog>
   </div>
 </template>
-
 <script>
 import {destructurateObject, objectToFormData} from "src/utils/utils";
 import {deleteProduct, putProduct} from "src/store/Product/products";
@@ -48,7 +47,9 @@ import FormCardAction from "components/Extras/FormCardActions";
 export default {
   components: {FormCardAction, CategoryAdd},
   props: {
-    productNew: {type: Object}
+    productNew: {type: Object},
+    categories_all:{type:Array},
+    liteVersion: {type: Boolean, default: false},
   },
   data() {
     return {
@@ -70,7 +71,6 @@ export default {
       ],
       photo_url: null,
       categories: [],
-      categories_all: [],
     }
   },
   methods: {

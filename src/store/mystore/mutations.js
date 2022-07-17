@@ -1,12 +1,10 @@
 import {Cookies} from 'quasar'
 
 
-
 export const updateLocalStorage = (state, {access}) => {
-  Cookies.set('lovetcgtoken', access, {expires: '20m', path: '/'});
+  Cookies.set('lovetcgtoken', access, {expires: '60m', path: '/'});
   state.accessToken = access;
 };
-
 export const destroyToken = (state) => {
   Cookies.remove('lovetcgtoken');
   Cookies.remove('lovetcguser');
@@ -19,7 +17,7 @@ export const SetUser = (state, access) => {
 };
 
 export const SetCookiesAccept = (state, value) => {
-  Cookies.set('loveCookies', value, {path: '/',expires: '100h 5m',});
+  Cookies.set('loveCookies', value, {path: '/', expires: '100h 5m',});
   state.Cookies_accepted = value;
 };
 

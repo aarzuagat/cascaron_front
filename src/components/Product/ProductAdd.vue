@@ -74,7 +74,7 @@
                               input-class="text-white"
                               dense
                               class="no-padding"
-                              :rules="[$rules.numeric(), $rules.required()]"
+                              :rules="[$rules.decimal(), $rules.required()]"
                             />
                           </div>
                           <div class="col-4 text-center q-pt-sm"> Precio Venta:</div>
@@ -87,7 +87,7 @@
                               outlined
                               input-class="text-white"
                               dense
-                              :rules="[$rules.numeric(), $rules.required()]"
+                              :rules="[$rules.decimal(), $rules.required()]"
                             />
                           </div>
                         </div>
@@ -176,7 +176,7 @@
                               dense
                               :suffix="$q.screen.gt.sm?`unidades`:`u`"
                               input-class="text-white"
-                              :rules="[$rules.required(), $rules.numeric()]"
+                              :rules="[$rules.required(), $rules.decimal()]"
                             />
                           </div>
                           <div class="col text-center q-px-sm" v-if="$q.screen.gt.sm">
@@ -213,6 +213,9 @@ import {objectToFormData, showDataformValues} from "src/utils/utils";
 
 export default {
   components: {CategoryAdd},
+  props:{
+    categories_all:{type:Array}
+  },
   data() {
     return {
       adding: false,
@@ -232,7 +235,6 @@ export default {
       ],
       photo_url: null,
       categories: [],
-      categories_all: [],
     }
   },
   methods: {
@@ -285,12 +287,10 @@ export default {
         }
       )
     },
-    async findCategories() {
-      this.categories = this.categories_all = await getCategories();
-    }
+
   },
   mounted() {
-    this.findCategories()
+    this.categories = this.categories_all
   }
 }
 </script>

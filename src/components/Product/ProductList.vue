@@ -5,7 +5,7 @@
     </div>
     <div v-else class="col-12 col-sm-6 col-md-4 q-py-xs bg-darkless-blue" v-for="(item,index) in products"
          :key="item.id">
-      <ProductItem :index="index" :product="item" @updated="findProducts"/>
+      <ProductItem :categories_all="categories_all" :index="index" :product="item" @updated="findProducts"/>
     </div>
   </div>
 </template>
@@ -17,6 +17,9 @@ import NoData from "components/Extras/NoData";
 
 export default {
   components: {NoData, ProductItem},
+  props:{
+    categories_all: {type:Array},
+  },
   data() {
     return {
       products: []

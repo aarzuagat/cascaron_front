@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {Cookies} from "quasar";
-
+import store from '../store'
+import {n} from "src/utils/mynotify";
 
 const axiosConfig = axios.create({
   baseURL: process.env.api,
@@ -19,7 +20,6 @@ axiosConfig.interceptors.request.use(
     return request;
   },
   error => {
-    console.log('must login', error)
     if (error.response.status === 404) {
       throw new Error(`${error.config.url} not found`);
     }
@@ -36,23 +36,32 @@ axiosConfig.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log('must login', error)
     if (error.response && error.response.status === 401) {
       // window.location.replace('/logout')
-      // const token = Cookies.get('djba_token')
-      // const headers = {
-      //   Authorization: 'Bearer ' + token,
-      // }
-      // if (token) {
-      //   axiosConfig.post(`${backURL()}auth/refresh?token=${token}`, {}, {headers}).then(response => {
-      //     const accessToken = response.data.access_token
-      //     store.state().accessToken = accessToken
-      //     Cookies.set('djba_token', accessToken)
-      //     axiosConfig._retry = true
-      //     // store.
-      //   }).catch(error => {
-      //     console.log('error', error)
-      //   })
-      // }
+      const token = store().getters["mystore/accessToken"]
+      console.log('token es', token)
+      const headers = {
+        Authorization: 'Bearer ' + token,
+      }
+      if (token) {
+        axiosConfig.post(`${process.env.api}auth/refresh?token=${token}`, {}, {headers}).then(response => {
+          console.log('response de boot', response)
+          const accessToken = response.data.access_token
+
+          Cookies.set('lovetcgtoken', accessToken)
+          axiosConfig._retry = true
+          // store.
+        }).catch(error => {
+          console.log('error', error)
+        })
+      } else {
+        store().dispatch('mystore/logoutUser').then(() => {
+          n('Sesión caducada. Debe volver a autenticarse')
+        }).catch(error => {
+          console.log(error)
+        })
+      }
       return;
     }
     if (error.response && error.response.status === 404) {

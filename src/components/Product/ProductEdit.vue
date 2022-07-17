@@ -1,10 +1,10 @@
 <template>
   <div class="row items-start justify-start full-width">
-    <q-btn  no-caps align="left" class="full-width" flat dense text-color="white" color="red"
+    <q-btn no-caps align="left" :class="liteVersion?'':`full-width`" flat dense text-color="white" color="red"
            @click="showing = true">
       <template v-slot:default>
         <q-icon name="mdi-square-edit-outline" color="red" size="sm"/>
-        <span class="q-pl-sm">Editar producto</span>
+        <span class="q-pl-sm" v-if="!liteVersion">Editar producto</span>
       </template>
     </q-btn>
     <q-dialog ref="mymodal" v-model="showing">
@@ -80,7 +80,7 @@
                               input-class="text-white"
                               dense
                               class="no-padding"
-                              :rules="[$rules.numeric(), $rules.required()]"
+                              :rules="[$rules.decimal(), $rules.required()]"
                             />
                           </div>
                           <div class="col-4 text-center q-pt-sm"> Precio Venta:</div>
@@ -93,7 +93,7 @@
                               outlined
                               input-class="text-white"
                               dense
-                              :rules="[$rules.numeric(), $rules.required()]"
+                              :rules="[$rules.decimal(), $rules.required()]"
                             />
                           </div>
                         </div>
@@ -186,7 +186,8 @@
                             />
                           </div>
                           <div class="col text-center q-px-sm" v-if="$q.screen.gt.sm">
-                            <q-btn type="submit" :label="$q.screen.gt.sm?`Editar producto`:`Crear`" no-caps color="red-5"
+                            <q-btn type="submit" :label="$q.screen.gt.sm?`Editar producto`:`Crear`" no-caps
+                                   color="red-5"
                                    size="sm"
                                    rounded class="q-px-lg q-py-xs" dense/>
                           </div>
@@ -210,7 +211,6 @@
     </q-dialog>
   </div>
 </template>
-
 <script>
 import {destructurateObject, objectToFormData} from "src/utils/utils";
 import {putProduct} from "src/store/Product/products";
@@ -220,7 +220,9 @@ import CategoryAdd from "components/Category/CategoryAdd";
 export default {
   components: {CategoryAdd},
   props: {
-    productNew: {type: Object}
+    productNew: {type: Object},
+    liteVersion: {type: Boolean, default: false},
+    categories_all:{type:Array}
   },
   data() {
     return {
@@ -242,7 +244,6 @@ export default {
       ],
       photo_url: null,
       categories: [],
-      categories_all: [],
     }
   },
   methods: {
@@ -252,7 +253,7 @@ export default {
         return false;
       }
       let formattedProduct = objectToFormData(this.product)
-      if(!formattedProduct.get('photo'))
+      if (!formattedProduct.get('photo'))
         formattedProduct.delete('photo')
       const newProduct = await putProduct(formattedProduct)
       this.showing = false;
@@ -306,7 +307,6 @@ export default {
     },
   },
   mounted() {
-    this.findCategories(false)
     this.setItems()
   }
 }

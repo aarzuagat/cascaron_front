@@ -30,7 +30,7 @@ export function postCategories(object) {
       })
       .catch(err => {
         Loading.hide()
-        n(`La Categoría ${object.name} no pudo ser agregada en estos momentos`)
+        n(`La Categoría ${object.name ?? ''} no pudo ser agregada en estos momentos`)
         reject(err)
       })
   })

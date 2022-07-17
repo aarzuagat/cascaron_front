@@ -31,7 +31,7 @@ export function postProduct(object) {
       })
       .catch(err => {
         Loading.hide()
-        n(`El producto ${object.name} no pudo ser agregado en estos momentos`)
+        n(`El producto ${object.name ?? ''} no pudo ser agregado en estos momentos`)
         reject(err)
       })
   })
@@ -55,7 +55,7 @@ export function putProduct(object) {
       })
       .catch(err => {
         Loading.hide()
-        n(`El producto ${object.name} no pudo ser actualizado en estos momentos`)
+        n(`El producto ${object.name ?? ''} no pudo ser actualizado en estos momentos`)
         reject(err)
       })
   })
@@ -74,7 +74,7 @@ export function deleteProduct(object) {
       })
       .catch(err => {
         Loading.hide()
-        n(`El producto ${object.name} no pudo ser eliminado en estos momentos`)
+        n(`El producto ${object.name ?? ''} no pudo ser eliminado en estos momentos`)
         reject(err)
       })
   })
