@@ -41,6 +41,7 @@ export function putProduct(object) {
   Loading.show()
   const name = object.get('name') ?? object.name
   const id = object.get('id') ?? object.id
+  object.append("_method","put")
   return new Promise((resolve, reject) => {
     axiosConfig.post(`products/${id}`, object, {
       headers: {

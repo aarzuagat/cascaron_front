@@ -254,7 +254,6 @@ export default {
       let formattedProduct = objectToFormData(this.product)
       if(!formattedProduct.get('photo'))
         formattedProduct.delete('photo')
-      formattedProduct.append("_method","put")
       const newProduct = await putProduct(formattedProduct)
       this.showing = false;
       this.$emit('updated')

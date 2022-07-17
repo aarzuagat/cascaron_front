@@ -5,16 +5,17 @@
         <div class="row items-center">
           <div class="col-4 q-pl-sm text-red text-bold">Listado de productos</div>
           <div class="col text-right q-mr-sm q-gutter-x-xs">
-            <div class="row items-center q-gutter-xs justify-end">
-              <ProductAdd v-if="loggedin && user?.role_id < 3" @updated="updateList"/>
-              <q-btn v-if="loggedin && user?.role_id < 3" color="red-5" class="q-px-sm" dense no-caps label="Vender producto" rounded/>
-              <q-btn v-if="loggedin && user?.role_id < 3" color="red-5" class="q-px-sm" dense no-caps label="Buscar   producto" rounded/>
+            <div class="row items-center q-gutter-xs justify-end" v-if="loggedin">
+              <ProductAdd v-if="user?.role_id < 3" @updated="updateList"/>
+              <q-btn v-if="user?.role_id < 3" color="red-5" class="q-px-sm" dense no-caps label="Vender producto"
+                     rounded/>
+
             </div>
           </div>
         </div>
       </div>
       <div class="col-12 q-mt-sm" :key="getKey">
-        <ProductList />
+        <ProductList/>
       </div>
     </div>
   </q-page>
@@ -27,9 +28,9 @@ import {mapGetters} from "vuex";
 
 export default {
   name: 'PageIndex',
-  components: { ProductAdd, ProductList},
+  components: {ProductAdd, ProductList},
   computed: {
-    getKey(){
+    getKey() {
       return this.key
     },
     ...mapGetters({
@@ -38,12 +39,12 @@ export default {
     })
   },
   data() {
-    return{
-      key:0
+    return {
+      key: 0
     }
   },
-  methods:{
-    updateList(){
+  methods: {
+    updateList() {
       this.key++
     }
   }
