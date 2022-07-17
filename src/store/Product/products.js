@@ -80,3 +80,21 @@ export function deleteProduct(object) {
   })
 }
 
+
+export function updateStock(object) {
+  Loading.show()
+  const name =  object.name ?? object.get('name')
+  return new Promise((resolve, reject) => {
+    axiosConfig.post('sellProduct', object)
+      .then(response => {
+        p(`Producto ${name} en stock actualizado correctamente`)
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n(`El producto ${object.name ?? ''} en stock no pudo ser actualizado en estos momentos`)
+        reject(err)
+      })
+  })
+}

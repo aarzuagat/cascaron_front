@@ -36,11 +36,9 @@ axiosConfig.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log('must login', error)
     if (error.response && error.response.status === 401) {
       // window.location.replace('/logout')
       const token = store().getters["mystore/accessToken"]
-      console.log('token es', token)
       const headers = {
         Authorization: 'Bearer ' + token,
       }

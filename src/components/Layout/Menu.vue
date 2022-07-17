@@ -17,7 +17,7 @@
         v-if="logged"
       >
         <div class="bg-dark-blue q-pl-xl">
-          <q-btn icon="mdi-format-list-bulleted" align="left" flat no-caps label="Listado" class="full-width"/>
+          <q-btn icon="mdi-format-list-bulleted" to="/stock" align="left" flat no-caps label="Listado" class="full-width"/>
           <q-btn icon="mdi-plus-circle-outline" align="left" flat no-caps label="Listado" class="full-width"/>
           <q-btn icon="mdi-cash-register" align="left" flat no-caps label="Vender producto" class="full-width"/>
           <q-btn icon="mdi-file-search-outline" align="left" flat no-caps label="Listado" class="full-width"/>
