@@ -16,6 +16,7 @@
               label="Email"
               dense
               label-color="white"
+              input-class="text-white"
             />
             <q-input
               v-model="user.password"
@@ -23,6 +24,7 @@
               label="Contraseña"
               dense
               label-color="white"
+              input-class="text-white"
             />
           </q-card-section>
           <FormCardAction custom-label="Autenticar"/>

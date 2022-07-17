@@ -3,7 +3,7 @@ import {Cookies} from 'quasar'
 
 
 export const updateLocalStorage = (state, {access}) => {
-  Cookies.set('lovetcgtoken', access, {expires: '1h 5m', path: '/'});
+  Cookies.set('lovetcgtoken', access, {expires: '20m', path: '/'});
   state.accessToken = access;
 };
 

@@ -11,24 +11,30 @@
             </div>
             <div class="col">
               <span class="text-white">{{ product.name }}</span>
-              <br><span class="text-white">{{ product.description.slice(0,10) || '-' }}</span>
+              <br><span class="text-white">{{ product.description.slice(0, 10) || '-' }}</span>
               <br><span class="text-red text-bold q-mt-md">{{ formatterCurrency(product.sell_price) }}</span>
             </div>
             <div class="col-auto">
-              <q-btn color="white" round flat class="absolute-top-right" icon="more_vert">
-                <q-menu cover auto-close>
-                  <q-list>
-                    <q-item clickable>
-                      <q-item-section>Remove Card</q-item-section>
-                    </q-item>
-                    <q-item clickable>
-                      <q-item-section>Send Feedback</q-item-section>
-                    </q-item>
-                    <q-item clickable>
-                      <q-item-section>Share</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
+              <q-btn color="white" round flat class="absolute-top-right" icon="more_vert" v-if="logged">
+                <q-popup-proxy transition-show="flip-up" transition-hide="flip-down" breakpoint="400">
+                  <div class="row bg-dark-blue borderx" style="border: 2px solid red; width: 20vw">
+                    <TagPrint v-if="user && user.role_id === 1" class="col-12 borderx"/>
+                    <ProductEdit
+                      v-if="user && user.role_id === 1"
+                      class="col-12 borderx"
+                      :product-new="product"
+                      @updated="$emit('updated')"
+                    />
+                    <ProductDelete
+                      v-if="user && user.role_id === 1"
+                      class="col-12 borderx"
+                      :product-new="product"
+                      @updated="$emit('updated')"
+                    />
+                    <sell-add v-if="user && user.role_id === 2" class="col-12 borderx"/>
+                    <StockAdd v-if="user && user.role_id === 1" class="col-12 borderx"/>
+                  </div>
+                </q-popup-proxy>
               </q-btn>
             </div>
           </div>
@@ -40,15 +46,22 @@
 
 <script>
 import {formatCurrency} from "src/utils/utils";
+import StockAdd from "components/Stock/StockAdd";
+import SellAdd from "components/Sell/SellAdd";
+import ProductEdit from "components/Product/ProductEdit";
+import TagPrint from "components/Product/TagPrint";
+import {mapGetters} from "vuex";
+import ProductDelete from "components/Product/ProductDelete";
 
 export default {
+  components: {ProductDelete, TagPrint, ProductEdit, SellAdd, StockAdd},
   // name: 'ComponentName',
   props: {
     index: {type: Number},
     product: {type: Object},
   },
   computed: {
-    image(){
+    image() {
       if (this.product.photo)
         return process.env.static + this.product.photo
       return '/img/image.jpg'
@@ -56,7 +69,11 @@ export default {
     isInIndex() {
       const candidates = [...Array(50).keys()].map((elem, index) => 1 + (3 * index))
       return candidates.includes(this.index)
-    }
+    },
+    ...mapGetters({
+      logged: 'mystore/loggedIn',
+      user: 'mystore/user'
+    })
   },
   data() {
     return {}
@@ -66,6 +83,11 @@ export default {
     formatterCurrency(amount) {
       return formatCurrency(amount)
     }
-  }
+  },
+
 }
 </script>
+<style lang="sass">
+.borderx
+  border-bottom: 1px solid red
+</style>

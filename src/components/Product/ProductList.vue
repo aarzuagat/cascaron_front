@@ -1,10 +1,11 @@
 <template>
   <div class="row " :class="products.length < 3?'':'items-center justify-center'">
     <div v-if="!products.length" class="col-12">
-      <NoData />
+      <NoData/>
     </div>
-    <div v-else class="col-12 col-sm-6 col-md-4 q-py-xs bg-darkless-blue" v-for="(item,index) in products" :key="item.id">
-      <ProductItem :index="index" :product="item"/>
+    <div v-else class="col-12 col-sm-6 col-md-4 q-py-xs bg-darkless-blue" v-for="(item,index) in products"
+         :key="item.id">
+      <ProductItem :index="index" :product="item" @updated="findProducts"/>
     </div>
   </div>
 </template>

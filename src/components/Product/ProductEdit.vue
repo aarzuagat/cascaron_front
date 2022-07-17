@@ -1,12 +1,18 @@
 <template>
-  <div>
-    <q-btn color="red-5" class="q-px-sm" dense no-caps label="Crear nuevo producto" rounded @click="adding = true"/>
-    <q-dialog v-model="adding">
+  <div class="row items-start justify-start full-width">
+    <q-btn  no-caps align="left" class="full-width" flat dense text-color="white" color="red"
+           @click="showing = true">
+      <template v-slot:default>
+        <q-icon name="mdi-square-edit-outline" color="red" size="sm"/>
+        <span class="q-pl-sm">Editar producto</span>
+      </template>
+    </q-btn>
+    <q-dialog ref="mymodal" v-model="showing">
       <div class="row justify-center justWhite" style="max-width: 75vw; width: 70vw">
         <div class="col-12">
           <q-card flat square class="bg-darkless-blue no-padding">
             <q-toolbar>
-              <span class="text-red">Crear nuevo producto</span>
+              <span class="text-red">Editar producto</span>
               <q-space/>
               <q-btn flat round dense color="red" icon="close" v-close-popup/>
             </q-toolbar>
@@ -180,7 +186,7 @@
                             />
                           </div>
                           <div class="col text-center q-px-sm" v-if="$q.screen.gt.sm">
-                            <q-btn type="submit" :label="$q.screen.gt.sm?`Crear producto`:`Crear`" no-caps color="red-5"
+                            <q-btn type="submit" :label="$q.screen.gt.sm?`Editar producto`:`Crear`" no-caps color="red-5"
                                    size="sm"
                                    rounded class="q-px-lg q-py-xs" dense/>
                           </div>
@@ -189,7 +195,7 @@
                     </div>
                     <div class="row q-pt-md" v-if="$q.screen.lt.md">
                       <div class="col-12 text-center">
-                        <q-btn type="submit" label="Crear producto" no-caps color="red-5" size="md"
+                        <q-btn type="submit" label="Editar producto" no-caps color="red-5" size="md"
                                rounded class="q-px-lg q-py-xs" dense/>
                       </div>
                     </div>
@@ -206,17 +212,21 @@
 </template>
 
 <script>
-import CategoryAdd from "components/Category/CategoryAdd";
+import {destructurateObject, objectToFormData} from "src/utils/utils";
+import {putProduct} from "src/store/Product/products";
 import {getCategories} from "src/store/Category/categories";
-import {postProduct} from "src/store/Product/products";
-import {objectToFormData, showDataformValues} from "src/utils/utils";
+import CategoryAdd from "components/Category/CategoryAdd";
 
 export default {
   components: {CategoryAdd},
+  props: {
+    productNew: {type: Object}
+  },
   data() {
     return {
-      adding: false,
+      showing: false,
       product: {
+        id: null,
         name: '',
         photo: [],
         cost_price: '',
@@ -224,7 +234,7 @@ export default {
         category_id: null,
         description: '',
         stock: '',
-        tag: 'Sin etiqueta'
+        tag: null,
       },
       tags: [
         'Todas las unidades',
@@ -241,31 +251,18 @@ export default {
         this.$notify.n('Debe agregar la foto del producto')
         return false;
       }
-      const formattedProduct = objectToFormData(this.product)
-      const newProduct = await postProduct(formattedProduct)
-      this.adding = false;
-      this.cleanProduct()
+      let formattedProduct = objectToFormData(this.product)
+      if(!formattedProduct.get('photo'))
+        formattedProduct.delete('photo')
+      formattedProduct.append("_method","put")
+      const newProduct = await putProduct(formattedProduct)
+      this.showing = false;
       this.$emit('updated')
     },
-    cleanProduct() {
-      this.product = {
-        name: '',
-        photo: [],
-        cost_price: '',
-        sell_price: '',
-        category_id: null,
-        description: '',
-        stock: '',
-        tag: {label: 'Sin etiqueta', value: 0}
-      }
-      this.photo_url = ''
-    },
-    urlImage() {
-      this.photo_url = URL.createObjectURL(this.product.photo)
-    },
-    addCategory(newCategory) {
-      this.categories_all.push(newCategory)
-      this.product.category_id = newCategory
+    setItems() {
+      this.product = destructurateObject(this.product, this.productNew)
+      this.photo_url = process.env.static + this.product.photo
+      this.product.photo = []
     },
     fnCategories(val, update, abort) {
       update(
@@ -285,12 +282,33 @@ export default {
         }
       )
     },
-    async findCategories() {
-      this.categories = this.categories_all = await getCategories();
-    }
+    async findCategories(showLoading) {
+      this.categories = this.categories_all = await getCategories(showLoading);
+    },
+    urlImage() {
+      this.photo_url = URL.createObjectURL(this.product.photo)
+    },
+    addCategory(newCategory) {
+      this.categories_all.push(newCategory)
+      this.product.category_id = newCategory
+    },
+    cleanProduct() {
+      this.product = {
+        name: '',
+        photo: [],
+        cost_price: '',
+        sell_price: '',
+        category_id: null,
+        description: '',
+        stock: '',
+        tag: 'Sin etiqueta',
+      }
+      this.photo_url = ''
+    },
   },
   mounted() {
-    this.findCategories()
+    this.findCategories(false)
+    this.setItems()
   }
 }
 </script>

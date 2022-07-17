@@ -1,10 +1,12 @@
+import security from "src/router/security";
 
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Landing/Index') }
+      {path: '',name:'home', component: () => import('pages/Landing/Index')},
+      ...security
     ]
   },
 

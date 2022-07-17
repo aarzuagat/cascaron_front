@@ -14,13 +14,12 @@ const axiosConfig = axios.create({
 axiosConfig.interceptors.request.use(
   request => {
     request.metadata = {startTime: new Date()};
-    // if (request.url.includes('/login')) {
     request.headers.authorization = 'Bearer ' + Cookies.get('lovetcgtoken');
     // }
     return request;
   },
   error => {
-    console.log('must login',error)
+    console.log('must login', error)
     if (error.response.status === 404) {
       throw new Error(`${error.config.url} not found`);
     }
@@ -56,8 +55,20 @@ axiosConfig.interceptors.response.use(
       // }
       return;
     }
-    if (error.response && error.response.status === 419) {
-      console.log('debo autenticarme ahoraaa');
+    if (error.response && error.response.status === 404) {
+      const token = Cookies.get('lovetcgtoken')
+      if (token)
+        axiosConfig.post(`${process.env.api}auth/refresh?token=${token}`).then(response => {
+          console.log(response)
+          const accessToken = response.data
+          // store.state().accessToken = accessToken
+          // Cookies.set('djba_token', accessToken)
+          axiosConfig._retry = true
+          // store.
+        }).catch(error => {
+          console.log('error', error)
+        })
+
       return;
     }
     return Promise.reject(error);
