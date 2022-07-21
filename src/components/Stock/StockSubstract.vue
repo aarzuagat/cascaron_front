@@ -1,11 +1,9 @@
 <template>
   <div class="row items-start justify-start ">
     <q-btn no-caps align="left" flat dense text-color="white" color="red" :class="liteVersion?'':'full-width'">
-      <q-icon name="mdi-numeric-positive-1" color="red" size="sm"/>
-      <span v-if="!liteVersion" class="q-pl-sm">Añadir stock</span>
+      <q-icon name="mdi-numeric-negative-1" color="red" size="sm"/>
+      <span v-if="!liteVersion" class="q-pl-sm">Disminuir stock</span>
     </q-btn>
-
-
   </div>
 </template>
 

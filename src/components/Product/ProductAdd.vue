@@ -169,7 +169,7 @@
                         <div class="row items-center">
                           <div class="col">
                             <q-input
-                              v-model="product.stock"
+                              v-model="product.quantity"
                               label-color="white"
                               outlined
                               class="bordered"
@@ -210,11 +210,12 @@ import CategoryAdd from "components/Category/CategoryAdd";
 import {getCategories} from "src/store/Category/categories";
 import {postProduct} from "src/store/Product/products";
 import {objectToFormData, showDataformValues} from "src/utils/utils";
+import {n} from "src/utils/mynotify";
 
 export default {
   components: {CategoryAdd},
-  props:{
-    categories_all:{type:Array}
+  props: {
+    categories_all: {type: Array}
   },
   data() {
     return {
@@ -226,8 +227,8 @@ export default {
         sell_price: '',
         category_id: null,
         description: '',
-        stock: '',
-        tag: 'Sin etiqueta'
+        quantity: '',
+        tag: 'Todas las unidades'
       },
       tags: [
         'Todas las unidades',
@@ -257,12 +258,17 @@ export default {
         sell_price: '',
         category_id: null,
         description: '',
-        stock: '',
-        tag: {label: 'Sin etiqueta', value: 0}
+        quantity: '',
+        tag: 'Sin etiqueta'
       }
       this.photo_url = ''
     },
     urlImage() {
+      const size_kb = this.product.photo.size / 1024
+      const size_mb = size_kb / 1024
+      if (size_mb > 10) {
+        n(`El límite máximo de cada fichero es 10mb. El fichero subido pesa ${Math.floor(size_mb)}`)
+      }
       this.photo_url = URL.createObjectURL(this.product.photo)
     },
     addCategory(newCategory) {

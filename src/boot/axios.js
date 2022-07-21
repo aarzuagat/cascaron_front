@@ -37,18 +37,20 @@ axiosConfig.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      // window.location.replace('/logout')
       const token = store().getters["mystore/accessToken"]
       const headers = {
         Authorization: 'Bearer ' + token,
       }
       if (token) {
         axiosConfig.post(`${process.env.api}auth/refresh?token=${token}`, {}, {headers}).then(response => {
-          console.log('response de boot', response)
           const accessToken = response.data.access_token
-
           Cookies.set('lovetcgtoken', accessToken)
+          axiosConfig.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
           axiosConfig._retry = true
+          axiosConfig.request(error.config)
+          // error.config._retry = true;
+          // error.config.headers['Authorization'] = 'Bearer ' + accessToken;
+          return axiosConfig(error.config)
           // store.
         }).catch(error => {
           console.log('error', error)

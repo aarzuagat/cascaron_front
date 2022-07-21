@@ -1,11 +1,15 @@
 <template>
   <q-page padding>
-    <!-- content -->
+    <StockList/>
   </q-page>
 </template>
 
 <script>
+import StockList from "components/Stock/StockList";
+
 export default {
+  components: {StockList}
+
   // name: 'PageName',
 }
 </script>

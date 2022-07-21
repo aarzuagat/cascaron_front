@@ -2,7 +2,7 @@ import {Cookies} from 'quasar'
 
 
 export const updateLocalStorage = (state, {access}) => {
-  Cookies.set('lovetcgtoken', access, {expires: '60m', path: '/'});
+  Cookies.set('lovetcgtoken', access, {expires: '8h', path: '/'});
   state.accessToken = access;
 };
 export const destroyToken = (state) => {

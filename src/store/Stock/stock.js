@@ -2,17 +2,17 @@ import axiosConfig from "boot/axios";
 import {Loading} from "quasar";
 import {n, p} from "src/utils/mynotify";
 
-export function getProducts() {
+export function getStock() {
   Loading.show()
   return new Promise((resolve, reject) => {
-    axiosConfig.get('products')
+    axiosConfig.get('lotes')
       .then(response => {
         Loading.hide()
         resolve(response)
       })
       .catch(err => {
         Loading.hide()
-        n('Los productos no están disponibles en estos momentos')
+        n('El stock no están disponibles en estos momentos')
         reject(err)
       })
   })
@@ -41,7 +41,7 @@ export function putProduct(object) {
   Loading.show()
   const name = object.get('name') ?? object.name
   const id = object.get('id') ?? object.id
-  object.append("_method", "put")
+  object.append("_method","put")
   return new Promise((resolve, reject) => {
     axiosConfig.post(`products/${id}`, object, {
       headers: {
@@ -83,7 +83,7 @@ export function deleteProduct(object) {
 
 export function updateStock(object) {
   Loading.show()
-  const name = object.name ?? object.get('name')
+  const name =  object.name ?? object.get('name')
   return new Promise((resolve, reject) => {
     axiosConfig.post('sellProduct', object)
       .then(response => {
@@ -93,10 +93,7 @@ export function updateStock(object) {
       })
       .catch(err => {
         Loading.hide()
-        if (err.response.data.data)
-          n(err.response.data.data)
-        else
-          n(`El producto ${object.name ?? ''} en stock no pudo ser actualizado en estos momentos`)
+        n(`El producto ${object.name ?? ''} en stock no pudo ser actualizado en estos momentos`)
         reject(err)
       })
   })

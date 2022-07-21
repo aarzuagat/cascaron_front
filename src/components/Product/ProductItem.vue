@@ -12,7 +12,7 @@
             <div class="col">
               <span class="text-white">{{ product.name }}</span>
               <br><span class="text-white">{{ product.description.slice(0, 10) || '-' }}</span>
-              <br><span class="text-red text-bold q-mt-md">{{ formatterCurrency(product.sell_price) }}</span>
+              <br><span class="text-red text-bold q-mt-md">{{ formatterCurrency(sell_price) }}</span>
             </div>
             <div class="col-auto">
               <q-btn color="white" round flat class="absolute-top-right" icon="more_vert" v-if="logged">
@@ -33,7 +33,8 @@
                       @updated="$emit('updated')"
                       :categories_all="categories_all"
                     />
-                    <sell-add v-if="user && user.role_id === 2" class="col-12 borderx"/>
+                    <ProductSell :lite_mode="true" :product="product" v-if="user && user.role_id < 3"
+                                 class="col-12 borderx"/>
                     <StockAdd v-if="user && user.role_id === 1" class="col-12 borderx"/>
                   </div>
                 </q-popup-proxy>
@@ -49,21 +50,23 @@
 <script>
 import {formatCurrency} from "src/utils/utils";
 import StockAdd from "components/Stock/StockAdd";
-import SellAdd from "components/Sell/SellAdd";
 import ProductEdit from "components/Product/ProductEdit";
 import TagPrint from "components/Product/TagPrint";
 import {mapGetters} from "vuex";
 import ProductDelete from "components/Product/ProductDelete";
+import ProductSell from "components/Product/ProductSell";
 
 export default {
-  components: {ProductDelete, TagPrint, ProductEdit, SellAdd, StockAdd},
-  // name: 'ComponentName',
+  components: {ProductSell, ProductDelete, TagPrint, ProductEdit, StockAdd},
   props: {
     index: {type: Number},
     product: {type: Object},
-    categories_all: {type:Array},
+    categories_all: {type: Array},
   },
   computed: {
+    sell_price() {
+      return this.product.lotes[0].sell_price ?? 0
+    },
     image() {
       if (this.product.photo)
         return process.env.static + this.product.photo
@@ -84,6 +87,7 @@ export default {
   methods: {
 
     formatterCurrency(amount) {
+      if (amount === 0) return '-'
       return formatCurrency(amount)
     }
   },

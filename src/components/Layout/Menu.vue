@@ -7,6 +7,7 @@
         class="full-width text-white"
         expand-icon-class="text-dark-blue"
         dense
+        :to="{name:'home'}"
       />
       <q-expansion-item
         expand-separator

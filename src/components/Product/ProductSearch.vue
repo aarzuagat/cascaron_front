@@ -2,6 +2,7 @@
   <div>
     <q-btn color="red-5" class="q-px-sm" dense no-caps label="Buscar producto"
            @click="searching = true"
+           v-if="products_all.length"
            rounded/>
     <q-dialog ref="mymodal" v-model="searching" @before-hide="cleanSearch">
       <div class="row justify-center" style="max-width: 65vw; width: 60vw">
@@ -54,7 +55,7 @@
                         color="white"
                         :rules="[$rules.required()]"
                       >
-                        <template v-slot:no-option v-if="user.role_id === 1">
+                        <template v-slot:no-option v-if="user && user.role_id === 1">
                           <q-item>
                             <q-item-section class="text-grey">
                               <CategoryAdd class="full-width" :full-width="true" @newCategory="$emit('updated')"/>
