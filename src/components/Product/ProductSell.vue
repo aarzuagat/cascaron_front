@@ -42,6 +42,7 @@
                     popup-content-class="text-white"
                     options-selected-class="text-white"
                     outlined
+                    :loading="tags_all.length ===0"
                     class="col no-padding"
                     dense
                     use-input
@@ -64,7 +65,7 @@
           </q-card>
           <q-card v-if="part === 1" square class="q-mt-sm bg-darkless-blue" flat>
             <q-card-section class="q-mt-sm">
-              <q-form @submit=" secondPart">
+              <q-form @submit="secondPart">
                 <div class="row q-gutter-xs custom_css">
                   <div class="col-12">
                     <q-card square class="q-mt-sm bg-darkless-blue" flat>
@@ -242,7 +243,7 @@
                               <div class="col-12 col-md text-white">
 
                                 <q-select
-                                  :options="tags"
+                                  :options="tagOptions"
                                   options-dense
                                   v-model="item.code"
                                   :option-label="i => i.tag"
@@ -306,6 +307,13 @@ export default {
     photo_url() {
       return process.env.static + this.productReal?.photo || 'logo.png'
     },
+    tagOptions() {
+      const lotes = this.productReal.lotes.map(i => i.id)
+      const taken = this.sell.map(i => i.code.id).flat(1)
+      const filterByProduct = i => lotes.includes(i.lote_id)
+      const filterTaken = i => !taken.includes(i.id)
+      return this.tags_all.filter(filterByProduct).filter(filterTaken)
+    },
     ...mapGetters({
       logged: 'mystore/loggedIn',
       user: 'mystore/user',
@@ -321,7 +329,7 @@ export default {
         cost_price: 0,
         quantity: 0,
         name: '',
-        lotes:[]
+        lotes: []
       },
       waiting: false,
       part: 0,
@@ -335,11 +343,9 @@ export default {
     }
   },
   methods: {
-
     changePart() {
       const lote = this.products_all.map(i => i.lotes).flat(1).filter(i => i.id === this.tag.lote_id)[0]
       const producto = this.products_all.filter(i => i.id === lote.id)[0]
-      console.log(producto)
       this.productReal = destructurateObject(this.productReal, producto)
       this.productReal.sell_price = lote.sell_price
       this.productReal.lotes = producto.lotes
@@ -349,7 +355,7 @@ export default {
       this.productReal.quantity = lote.tags.filter(i => !i.deleted_at).length
       this.part = 1
     },
-    secondPart(){
+    secondPart() {
       const lista = [...Array(parseInt(this.stock)).keys()]
       this.sell = []
       lista.forEach(i => {
@@ -382,7 +388,7 @@ export default {
     },
     fnTagByroducts(val, update, abort) {
       const lotes = this.productReal.lotes.map(i => i.id)
-      const taken = this.sell.map(i =>i.code.id).flat(1)
+      const taken = this.sell.map(i => i.code.id).flat(1)
       const filterByProduct = i => lotes.includes(i.lote_id)
       const filterTaken = i => !taken.includes(i.id)
       update(
@@ -403,10 +409,19 @@ export default {
       )
     },
     cleanSearch() {
+      this.part = 0;
+      this.productReal = {
+        id: 0,
+        photo: null,
+        sell_price: 0,
+        cost_price: 0,
+        quantity: 0,
+        name: '',
+        lotes: []
+      }
       this.$emit('updated')
     },
     async submit() {
-      console.log('hereee')
       const obj = {
         product: this.productReal,
         sell: this.sell,
@@ -417,11 +432,13 @@ export default {
       this.selling = false
       this.productReal = []
       this.tag = []
+      await this.findProducts(false)
       this.$emit('updated')
 
     },
-    async findProducts() {
-      const products = await getProducts();
+    async findProducts(show_loading = true) {
+      this.products = []
+      const products = await getProducts(show_loading);
       if (products.status < 400) {
         const all = products.data.data
         this.products = this.products_all = all

@@ -1,4 +1,4 @@
-import security from "src/router/security";
+import security from "src/router/modules/security";
 
 const routes = [
   {

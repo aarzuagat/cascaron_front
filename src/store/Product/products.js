@@ -2,8 +2,9 @@ import axiosConfig from "boot/axios";
 import {Loading} from "quasar";
 import {n, p} from "src/utils/mynotify";
 
-export function getProducts() {
-  Loading.show()
+export function getProducts(show_loading = true) {
+  if (show_loading)
+    Loading.show()
   return new Promise((resolve, reject) => {
     axiosConfig.get('products')
       .then(response => {
