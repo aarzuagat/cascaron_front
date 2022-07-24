@@ -20,6 +20,7 @@ export function loginUser(context, credentials) {
 }
 
 export function logoutUser(context) {
+  console.log('estoy loggin out')
   if (context.getters.loggedIn) {
     return new Promise((resolve, reject) => {
       context.commit('destroyToken');

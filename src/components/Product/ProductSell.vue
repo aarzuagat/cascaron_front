@@ -8,7 +8,7 @@
     <q-btn color="red-5" class="q-px-sm" dense no-caps v-else label="Vender producto"
            @click="selling = true" rounded/>
 
-    <q-dialog ref="mymodal" v-model="selling" @before-hide="cleanSearch">
+    <q-dialog ref="mymodal" v-model="selling" @before-hide="cleanSearch" @before-show="findProducts">
       <div class="row justify-center" style="max-width: 75vw; width: 70vw">
         <div class="col-12">
           <q-card flat square class="bg-darkless-blue no-padding">
@@ -447,7 +447,6 @@ export default {
     }
   },
   mounted() {
-    this.findProducts()
   }
 }
 </script>

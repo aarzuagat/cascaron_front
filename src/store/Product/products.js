@@ -102,3 +102,30 @@ export function updateStock(object) {
       })
   })
 }
+
+
+export function downloadProductTag(object) {
+  Loading.show()
+  const name = `lote ${object.id}`
+  return new Promise((resolve, reject) => {
+    axiosConfig.post('tag-download', object, {responseType: 'blob'}).then(response => {
+      this.$q.loading.hide()
+      if (response.status < 400) {
+        const url = URL.createObjectURL(new Blob([response.data], {
+          type: 'application/pdf'
+        }))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `${name}.pdf`)
+        document.body.appendChild(link)
+        link.click()
+        // saveAs(response.data.data, `Factura_.pdf`);
+      }
+    })
+      .catch(err => {
+        Loading.hide()
+        // n(`El producto ${object.name ?? ''} no pudo ser agregado en estos momentos`)
+        reject(err)
+      })
+  })
+}

@@ -12,6 +12,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "file-saver": "^2.0.5",
     "quasar": "^1.0.0",
     "simple-crypto-js": "^3.0.1",
     "vue-i18n": "^8.0.0",

@@ -1,14 +1,13 @@
 <template>
   <div class="row q-pt-sm ">
     <div class="col-12">
-
       <div class="row ">
         <q-btn class="full-width" flat no-caps :to="{name:'home'}">
           <div class="row full-width">
-            <div class="col-3 text-left">
+            <div class="col-2 text-left">
               <q-icon name="mdi-view-dashboard" color="white"/>
             </div>
-            <div class="col text-white text-left">
+            <div class="col q-pl-md text-white text-left">
               <span>Dashboard</span>
             </div>
           </div>

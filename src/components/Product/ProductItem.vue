@@ -18,7 +18,7 @@
               <q-btn color="white" round flat class="absolute-top-right" icon="more_vert" v-if="logged">
                 <q-popup-proxy transition-show="flip-up" transition-hide="flip-down" breakpoint="400">
                   <div class="row bg-dark-blue borderx" style="border: 2px solid red; width: 20vw">
-                    <TagPrint v-if="user && user.role_id === 1" class="col-12 borderx"/>
+
                     <ProductEdit
                       v-if="user && user.role_id === 1"
                       class="col-12 borderx"
@@ -35,7 +35,11 @@
                     />
                     <ProductSell :lite_mode="true" :product="product" v-if="user && user.role_id < 3"
                                  class="col-12 borderx"/>
-                    <StockAdd v-if="user && user.role_id === 1" class="col-12 borderx"/>
+                    <StockAdd
+                      v-if="user && user.role_id === 1"
+                      :product-new="product"
+                      class="col-12 borderx"
+                    />
                   </div>
                 </q-popup-proxy>
               </q-btn>
@@ -85,7 +89,6 @@ export default {
     return {}
   },
   methods: {
-
     formatterCurrency(amount) {
       if (amount === 0) return '-'
       return formatCurrency(amount)

@@ -19,19 +19,19 @@ export function getStock() {
 }
 
 
-export function postProduct(object) {
+export function postStock(object, property = 'name') {
   Loading.show()
-  const name = object.get('name') ?? object.name
+  const name = object[property] ?? object.get(property)
   return new Promise((resolve, reject) => {
-    axiosConfig.post('products', object)
+    axiosConfig.post('lotes', object)
       .then(response => {
-        p(`Producto ${name} agregado correctamente`)
+        p(`Lote ${name} agregado correctamente`)
         Loading.hide()
         resolve(response.data.data)
       })
       .catch(err => {
         Loading.hide()
-        n(`El producto ${object.name ?? ''} no pudo ser agregado en estos momentos`)
+        n(`El lote ${object.name ?? ''} no pudo ser agregado en estos momentos`)
         reject(err)
       })
   })
@@ -41,7 +41,7 @@ export function putProduct(object) {
   Loading.show()
   const name = object.get('name') ?? object.name
   const id = object.get('id') ?? object.id
-  object.append("_method","put")
+  object.append("_method", "put")
   return new Promise((resolve, reject) => {
     axiosConfig.post(`products/${id}`, object, {
       headers: {
@@ -83,7 +83,7 @@ export function deleteProduct(object) {
 
 export function updateStock(object) {
   Loading.show()
-  const name =  object.name ?? object.get('name')
+  const name = object.name ?? object.get('name')
   return new Promise((resolve, reject) => {
     axiosConfig.post('sellProduct', object)
       .then(response => {

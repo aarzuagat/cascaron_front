@@ -18,13 +18,10 @@
         <div class="col-1  text-center">No</div>
         <div class="col ">Nombre</div>
         <div class="col-2 text-center">Stock</div>
-        <div class="col-3 "> Acciones</div>
+        <div class="col-3"> Acciones</div>
       </div>
-      <div class="row">
-        <div class="col-12" v-for="(item,index) in stocks.slice(start,end)" :key="item.id">
-          <StockListItem :product="item" :number="index+1"/>
-        </div>
-      </div>
+      <StockListItem v-for="(item,index) in stocks.slice(start,end)" :key="item.id" :product="item" :number="index+1"
+                     :categories="categories" @updated="findStock"/>
     </div>
     <div class="col-12" v-else>
       <NoData/>
@@ -42,6 +39,7 @@
 import {getStock} from "src/store/Stock/stock";
 import StockListItem from "components/Stock/StockListItem";
 import NoData from "components/Extras/NoData";
+import {getCategories} from "src/store/Category/categories";
 
 export default {
   components: {NoData, StockListItem},
@@ -52,7 +50,8 @@ export default {
       stocks_all: [],
       start: 0,
       end: 20,
-      name: ''
+      name: '',
+      categories: []
     }
   },
   methods: {
@@ -61,8 +60,11 @@ export default {
     },
     async findStock() {
       const all = await getStock()
-      console.log(all)
-      this.stocks = this.stocks_all = all.data.data
+      this.stocks = this.stocks_all = all.data.data.sort((a, b) => a.quantity < b.quantity)
+      await this.findCategories()
+    },
+    async findCategories() {
+      this.categories = await getCategories(false)
     }
   },
   mounted() {
@@ -70,3 +72,7 @@ export default {
   }
 }
 </script>
+<style lang="sass">
+.bt
+  border-top: 1px solid $darkless-blue
+</style>

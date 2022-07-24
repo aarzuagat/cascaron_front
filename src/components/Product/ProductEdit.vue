@@ -1,11 +1,10 @@
 <template>
-  <div class="row items-start justify-start full-width">
+  <div class="row items-start justify-start ">
     <q-btn no-caps align="left" :class="liteVersion?'':`full-width`" flat dense text-color="white" color="red"
            @click="showing = true">
-      <template v-slot:default>
         <q-icon name="mdi-square-edit-outline" color="red" size="sm"/>
         <span class="q-pl-sm" v-if="!liteVersion">Editar producto</span>
-      </template>
+
     </q-btn>
     <q-dialog ref="mymodal" v-model="showing">
       <div class="row justify-center justWhite" style="max-width: 75vw; width: 70vw">
@@ -64,41 +63,7 @@
                         />
                       </div>
                     </div>
-                    <div class="row items-center justify-center q-pt-sm ">
-                      <div class="col-4">
-                        Precio Coste:
-                      </div>
-                      <div class="col">
-                        <div class="row justify-center q-mt-md">
-                          <div class="col">
-                            <q-input
-                              v-model="product.cost_price"
-                              label-color="white"
-                              placeholder="34.000 XAF"
-                              color="white"
-                              outlined
-                              input-class="text-white"
-                              dense
-                              class="no-padding"
-                              :rules="[$rules.decimal(), $rules.required()]"
-                            />
-                          </div>
-                          <div class="col-4 text-center q-pt-sm"> Precio Venta:</div>
-                          <div class="col">
-                            <q-input
-                              v-model="product.sell_price"
-                              label-color="white"
-                              placeholder="44.000 XAF"
-                              color="white"
-                              outlined
-                              input-class="text-white"
-                              dense
-                              :rules="[$rules.decimal(), $rules.required()]"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                     <div class="row items-center q-pt-sm">
                       <div class="col-4">
                         Categoría:
@@ -168,23 +133,10 @@
                       </div>
                     </div>
                     <div class="row items-center q-pt-sm">
-                      <div class="col-4">
-                        Stock disponible:
-                      </div>
+
                       <div class="col">
                         <div class="row items-center">
-                          <div class="col">
-                            <q-input
-                              v-model="product.stock"
-                              label-color="white"
-                              outlined
-                              class="bordered"
-                              dense
-                              :suffix="$q.screen.gt.sm?`unidades`:`u`"
-                              input-class="text-white"
-                              :rules="[$rules.required(), $rules.numeric()]"
-                            />
-                          </div>
+
                           <div class="col text-center q-px-sm" v-if="$q.screen.gt.sm">
                             <q-btn type="submit" :label="$q.screen.gt.sm?`Editar producto`:`Crear`" no-caps
                                    color="red-5"

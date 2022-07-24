@@ -58,6 +58,7 @@ axiosConfig.interceptors.response.use(
       } else {
         store().dispatch('mystore/logoutUser').then(() => {
           n('Sesión caducada. Debe volver a autenticarse')
+
         }).catch(error => {
           console.log(error)
         })
