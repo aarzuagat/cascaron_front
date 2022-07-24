@@ -14,12 +14,7 @@
       />
     </div>
     <div v-if="stocks.length" class="col-12">
-      <div class="row text-bold q-py-sm">
-        <div class="col-1  text-center">No</div>
-        <div class="col ">Nombre</div>
-        <div class="col-2 text-center">Stock</div>
-        <div class="col-3"> Acciones</div>
-      </div>
+
       <StockListItem v-for="(item,index) in stocks.slice(start,end)" :key="item.id" :product="item" :number="index+1"
                      :categories="categories" @updated="findStock"/>
     </div>

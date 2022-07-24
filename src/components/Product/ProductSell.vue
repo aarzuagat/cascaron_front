@@ -49,6 +49,8 @@
                     clearable
                     @filter="fnProducts"
                     @input="changePart"
+                    @clear="tag = ''"
+                    @remove="tag = ''"
                     :popup-content-class="$q.screen.gt.sm?`bg-dark-blue dark-blue text-white`:`bg-dark-blue`"
                     label="Seleccione un producto"
                     color="white"
@@ -345,7 +347,7 @@ export default {
   methods: {
     changePart() {
       const lote = this.products_all.map(i => i.lotes).flat(1).filter(i => i.id === this.tag.lote_id)[0]
-      const producto = this.products_all.filter(i => i.id === lote.id)[0]
+      const producto = this.products_all.filter(i => i.id === lote.product_id)[0]
       this.productReal = destructurateObject(this.productReal, producto)
       this.productReal.sell_price = lote.sell_price
       this.productReal.lotes = producto.lotes
@@ -447,6 +449,7 @@ export default {
     }
   },
   mounted() {
+    this.findProducts()
   }
 }
 </script>

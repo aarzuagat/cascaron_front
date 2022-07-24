@@ -3,6 +3,7 @@
     <td class="col-1 text-center">{{ number }}</td>
     <td class="col">{{ formatterDate(stock.buy_date) }}</td>
     <td class="col text-center">{{ stock.quantity }}</td>
+    <td class="col text-center">{{ stock.quantityReal }}</td>
     <td class="col text-center">{{ formatterCurrency(stock.cost_price || 0) }}</td>
     <td class="col text-center">{{ formatterCurrency(stock.sell_price || 0) }}</td>
     <td class="col text-center">{{ formatterDate(stock.created_at) }}</td>

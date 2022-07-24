@@ -7,11 +7,30 @@
         icon="perm_identity"
         label="Lotes"
         class="full-width"
+        v-if="number=== 1"
+        dense
+      >
+        <template v-slot:header>
+          <div class="row full-width items-center">
+            <div class="col-1 text-center">No.</div>
+            <div class="col">Nombre</div>
+            <div class="col-2 text-center">Stock</div>
+            <div class="col-3"> Acciones</div>
+          </div>
+        </template>
+      </q-expansion-item>
+    </div>
+    <div class="col-12">
+      <q-expansion-item
+        expand-separator
+        icon="perm_identity"
+        label="Lotes"
+        class="full-width"
         :class="number%2 !== 0?'bg-darkless-blue':''"
         dense
       >
         <template v-slot:header>
-          <div class="row full-width">
+          <div class="row full-width items-center">
             <div class="col-1 text-center">{{ number }}</div>
             <div class="col">{{ product.name }}</div>
             <div class="col-2 text-center">{{ product.quantity }}</div>
@@ -32,7 +51,8 @@
               <tr>
                 <th class="text-center">No.</th>
                 <th class="text-center">Fecha de venta</th>
-                <th class="text-center">Unidades</th>
+                <th class="text-center">En stock</th>
+                <th class="text-center">Unidades Total</th>
                 <th class="text-center">Precio/costo</th>
                 <th class="text-center">Precio/venta</th>
                 <th class="text-center">Creado</th>
