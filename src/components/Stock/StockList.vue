@@ -3,14 +3,15 @@
     <div class="col-12">
       <q-input
         v-model="name"
-        :disable="!stocks.length "
+        :disable="!stocks_all.length "
         dense
         label="Filtrar"
         label-color="white"
-        input-class="text-white"
+        input-class="text-white q-pa-sm"
         @input="filterStock"
         debounce="500"
-
+        clearable
+        @clear="name = ''"
       />
     </div>
     <div v-if="stocks.length" class="col-12">
@@ -51,6 +52,10 @@ export default {
   },
   methods: {
     filterStock() {
+      if (!this.stocks_all.length || !this.name){
+        this.stocks = this.stocks_all
+        return false
+      }
       this.stocks = this.stocks_all.filter(i => i.name.toLowerCase().includes(this.name.toLowerCase()))
     },
     async findStock() {
@@ -70,4 +75,8 @@ export default {
 <style lang="sass">
 .bt
   border-top: 1px solid $darkless-blue
+
+.q-field__append, .q-field__suffix, .q-field__native, .q-field__input
+  color: white
+
 </style>

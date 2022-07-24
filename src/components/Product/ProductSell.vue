@@ -1,6 +1,18 @@
 <template>
   <div>
-    <q-btn class="full-width" v-if="lite_mode" dense no-caps @click="selling = true" flat text-color="white" color="red"
+    <q-btn v-if="sign_mode" dense no-caps @click="selling = true" flat text-color="white" color="red"
+           align="left">
+      <q-icon name="fa fa-dollar-sign" color="red" size="sm"/>
+      <q-tooltip>Venta de producto</q-tooltip>
+    </q-btn>
+    <q-btn class="full-width" v-else-if="menu_mode" dense no-caps @click="selling = true" flat text-color="white"
+           color="red"
+           align="left">
+      <q-icon name="fa fa-dollar-sign" color="white" size="sm"/>
+      <span class="q-pl-sm">Vender producto</span>
+    </q-btn>
+    <q-btn class="full-width" v-else-if="lite_mode" dense no-caps @click="selling = true" flat text-color="white"
+           color="red"
            align="left">
       <q-icon name="fa fa-dollar-sign" color="red" size="sm"/>
       <span class="q-pl-sm">Nueva venta</span>
@@ -304,6 +316,9 @@ export default {
   components: {CategoryAdd, ProductSearchItem},
   props: {
     lite_mode: {type: Boolean, default: false},
+    menu_mode: {type: Boolean, default: false},
+    sign_mode: {type: Boolean, default: false},
+    lote: {type: Object, default: null},
   },
   computed: {
     photo_url() {
@@ -331,7 +346,8 @@ export default {
         cost_price: 0,
         quantity: 0,
         name: '',
-        lotes: []
+        lotes: [],
+        lite:false
       },
       waiting: false,
       part: 0,
@@ -358,17 +374,22 @@ export default {
       this.part = 1
     },
     secondPart() {
-      const lista = [...Array(parseInt(this.stock)).keys()]
-      this.sell = []
-      lista.forEach(i => {
-        const item = {
-          id: i,
-          name: this.productReal.name,
-          code: ''
-        }
-        this.sell.push(item)
-      })
-      this.part = 2
+      if (this.productReal.tag !== 'Todas las unidades') {
+        this.productReal.lite = true
+        this.submit()
+      } else {
+        const lista = [...Array(parseInt(this.stock)).keys()]
+        this.sell = []
+        lista.forEach(i => {
+          const item = {
+            id: i,
+            name: this.productReal.name,
+            code: ''
+          }
+          this.sell.push(item)
+        })
+        this.part = 2
+      }
     },
     fnProducts(val, update, abort) {
       update(
@@ -428,6 +449,8 @@ export default {
         product: this.productReal,
         sell: this.sell,
         name: this.productReal.name,
+        quantity: this.stock,
+        lote: this.lote
       }
       await updateStock(obj)
       this.part = 0;
@@ -445,11 +468,26 @@ export default {
         const all = products.data.data
         this.products = this.products_all = all
         this.tags = this.tags_all = all.map(i => i.lotes).flat(1).map(i => i.tags).flat(1)
+        if (this.lote) {
+          this.setItems()
+        }
       }
+    },
+    setItems() {
+      const lote = this.products_all.map(i => i.lotes).flat(1).filter(i => i.id === this.lote.id)[0]
+      const producto = this.products_all.filter(i => i.id === lote.product_id)[0]
+      this.productReal = destructurateObject(this.productReal, producto)
+      this.productReal.sell_price = lote.sell_price
+      this.productReal.lotes = producto.lotes
+      this.productReal.photo = producto.photo
+      this.productReal.name = producto.name
+      this.productReal.cost_price = lote.cost_price
+      this.productReal.quantity = lote.quantityStock
+      this.part = 1
     }
   },
   mounted() {
-    this.findProducts()
+
   }
 }
 </script>

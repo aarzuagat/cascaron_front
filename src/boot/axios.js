@@ -3,6 +3,7 @@ import {Cookies} from "quasar";
 import store from '../store'
 import {n} from "src/utils/mynotify";
 
+
 const axiosConfig = axios.create({
   baseURL: process.env.api,
   headers: {
@@ -58,7 +59,7 @@ axiosConfig.interceptors.response.use(
       } else {
         store().dispatch('mystore/logoutUser').then(() => {
           n('Sesión caducada. Debe volver a autenticarse')
-
+          window.location.replace('/')
         }).catch(error => {
           console.log(error)
         })

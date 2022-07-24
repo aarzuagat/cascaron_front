@@ -20,13 +20,12 @@
         class="full-width text-white"
         expand-icon-class="text-white"
         v-if="logged"
+        default-opened
       >
-        <div class="bg-dark-blue q-pl-xl">
-          <q-btn icon="mdi-format-list-bulleted" to="/stock" align="left" flat no-caps label="Listado"
-                 class="full-width"/>
-          <q-btn icon="mdi-plus-circle-outline" align="left" flat no-caps label="Listado" class="full-width"/>
-          <q-btn icon="mdi-cash-register" align="left" flat no-caps label="Vender producto" class="full-width"/>
-          <q-btn icon="mdi-file-search-outline" align="left" flat no-caps label="Listado" class="full-width"/>
+        <div class="bg-dark-blue q-pl-xl text-blue-1">
+          <StockListButton/>
+          <ProductSell :menu_mode="true"/>
+          <ProductSearch :categories="categories" :menu_mode="true"/>
         </div>
       </q-expansion-item>
 
@@ -36,8 +35,12 @@
 
 <script>
 import {mapGetters} from "vuex";
+import ProductSell from "components/Product/ProductSell";
+import ProductSearch from "components/Product/ProductSearch";
+import StockListButton from "components/Stock/StockListButton";
 
 export default {
+  components: {StockListButton, ProductSearch, ProductSell},
   // name: 'ComponentName',
   computed: {
     ...mapGetters({
@@ -45,7 +48,9 @@ export default {
     })
   },
   data() {
-    return {}
+    return {
+      categories: []
+    }
   }
 }
 </script>

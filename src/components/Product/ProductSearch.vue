@@ -1,8 +1,13 @@
 <template>
   <div>
-    <q-btn color="red-5" class="q-px-sm" dense no-caps label="Buscar producto"
+    <q-btn class="full-width" v-if="menu_mode" dense no-caps @click="searching = true" flat text-color="white" color="red"
+           align="left">
+      <q-icon name="mdi-file-search" color="white" size="sm"/>
+      <span class="q-pl-sm">Buscar producto</span>
+    </q-btn>
+    <q-btn color="red-5"  class="q-px-sm" dense no-caps label="Buscar producto"
            @click="searching = true"
-           v-if="products_all.length"
+           v-if="products_all.length && !menu_mode"
            rounded/>
     <q-dialog ref="mymodal" v-model="searching" @before-hide="cleanSearch">
       <div class="row justify-center" style="max-width: 65vw; width: 60vw">
@@ -158,7 +163,8 @@ import CategoryAdd from "components/Category/CategoryAdd";
 export default {
   components: {CategoryAdd, ProductSearchItem},
   props: {
-    categories: {type: Array}
+    categories: {type: Array},
+    menu_mode: {type: Boolean, default:false},
   },
   computed: {
     ...mapGetters({
@@ -249,7 +255,7 @@ export default {
       this.waiting = false
     },
     async findProducts() {
-      const products = await getProducts();
+      const products = await getProducts(false);
       if (products.status < 400) {
         this.products_all = products.data.data
       }
