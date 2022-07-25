@@ -5,10 +5,10 @@
 
     <q-drawer show-if-above v-model="left" side="left" class="q-mt-sm"
               content-class="bg-dark-blue">
-      <Menu/>
+      <Menu @updated="key++"/>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container :key="key">
       <router-view/>
     </q-page-container>
 
@@ -23,7 +23,8 @@ export default {
   components: {Header, Menu},
   data() {
     return {
-      left: false
+      left: false,
+      key:0
     }
   },
   methods: {

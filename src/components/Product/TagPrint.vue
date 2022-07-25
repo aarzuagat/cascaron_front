@@ -27,11 +27,12 @@ export default {
     return {}
   },
   methods: {
-    printTags() {
+    async printTags() {
       const obj = {
         lote_id: this.lote.id,
       }
-      const tags = downloadProductTag(obj)
+      const tags = await downloadProductTag(obj)
+      console.log(tags)
     }
   }
 }

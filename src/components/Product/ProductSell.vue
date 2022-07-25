@@ -54,7 +54,7 @@
                     popup-content-class="text-white"
                     options-selected-class="text-white"
                     outlined
-                    :loading="tags_all.length ===0"
+                    :loading="tags.length ===0"
                     class="col no-padding"
                     dense
                     use-input
@@ -183,12 +183,7 @@
                                 Dispones de {{ productReal.quantity }} unidades máximas
                               </div>
                             </div>
-                            <div class="row q-pt-md" v-if="$q.screen.lt.md">
-                              <div class="col-12 text-center">
-                                <q-btn type="submit" label="Crear producto" no-caps color="red-5" size="md"
-                                       rounded class="q-px-lg q-py-xs" dense/>
-                              </div>
-                            </div>
+
                           </div>
                           <div class="col-1"></div>
                         </div>
@@ -325,7 +320,10 @@ export default {
       return process.env.static + this.productReal?.photo || 'logo.png'
     },
     tagOptions() {
-      const lotes = this.productReal.lotes.map(i => i.id)
+      let lotes = this.productReal.lotes.map(i => i.id)
+      if (this.lote) {
+        lotes = this.productReal.lotes.filter(i => i.id === this.lote.id).map(i => i.id)
+      }
       const taken = this.sell.map(i => i.code.id).flat(1)
       const filterByProduct = i => lotes.includes(i.lote_id)
       const filterTaken = i => !taken.includes(i.id)
@@ -346,8 +344,9 @@ export default {
         cost_price: 0,
         quantity: 0,
         name: '',
+        tag: '',
         lotes: [],
-        lite:false
+        lite: false
       },
       waiting: false,
       part: 0,
@@ -369,6 +368,7 @@ export default {
       this.productReal.lotes = producto.lotes
       this.productReal.photo = producto.photo
       this.productReal.name = producto.name
+      this.productReal.tag = producto.tag
       this.productReal.cost_price = lote.cost_price
       this.productReal.quantity = lote.tags.filter(i => !i.deleted_at).length
       this.part = 1
@@ -450,19 +450,19 @@ export default {
         sell: this.sell,
         name: this.productReal.name,
         quantity: this.stock,
-        lote: this.lote
+        lote: this.lote ?? null
       }
       await updateStock(obj)
       this.part = 0;
       this.selling = false
-      this.productReal = []
-      this.tag = []
-      await this.findProducts(false)
+      this.tag = ''
+      this.products = this.products_all = []
+      this.tags = this.tags_all = []
       this.$emit('updated')
 
     },
     async findProducts(show_loading = true) {
-      this.products = []
+      this.products = this.products_all = []
       const products = await getProducts(show_loading);
       if (products.status < 400) {
         const all = products.data.data
@@ -474,19 +474,24 @@ export default {
       }
     },
     setItems() {
-      const lote = this.products_all.map(i => i.lotes).flat(1).filter(i => i.id === this.lote.id)[0]
+      const lote = this.lote
       const producto = this.products_all.filter(i => i.id === lote.product_id)[0]
+      if (!producto) return false;
       this.productReal = destructurateObject(this.productReal, producto)
       this.productReal.sell_price = lote.sell_price
       this.productReal.lotes = producto.lotes
       this.productReal.photo = producto.photo
       this.productReal.name = producto.name
+      this.productReal.tag = producto.tag
       this.productReal.cost_price = lote.cost_price
       this.productReal.quantity = lote.quantityStock
       this.part = 1
     }
   },
   mounted() {
+    if (!this.lote) {
+      this.findProducts()
+    }
 
   }
 }

@@ -1,0 +1,7 @@
+{
+  "appId": "com.lovetcg.app",
+  "appName": "Love",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}
