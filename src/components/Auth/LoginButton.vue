@@ -36,6 +36,8 @@
 
 <script>
 import FormCardAction from "components/Extras/FormCardActions";
+import requestPermission from "src/store/firebase/firebase";
+import {getMessaging, getToken} from "firebase/messaging";
 
 export default {
   components: {FormCardAction},
@@ -53,6 +55,7 @@ export default {
       this.$q.loading.show()
       const user = await this.$store.dispatch('mystore/loginUser', this.user)
       this.$q.loading.hide()
+
     }
   }
 }

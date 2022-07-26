@@ -21,3 +21,7 @@ export const SetCookiesAccept = (state, value) => {
   state.Cookies_accepted = value;
 };
 
+export const SetFirebaseToken = (state, value) => {
+  Cookies.set('lovefirebaseToken', value, {path: '/', expires: 100});
+  state.lovefirebaseToken = value;
+};

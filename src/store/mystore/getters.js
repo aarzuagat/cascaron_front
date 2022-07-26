@@ -16,3 +16,6 @@ export function cookiesAccept(state) {
   return state.cookies_accepted === true
 }
 
+export function firebaseToken(state) {
+  return state.firebaseToken
+}

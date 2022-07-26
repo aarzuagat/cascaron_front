@@ -30,7 +30,7 @@ export function logoutUser(context) {
 }
 
 
-export function getDataUser(context, token) {
+export function getDataUser(context) {
   return new Promise((resolve, reject) => {
     axiosConfig.post('/auth/me')
       .then(response => {
@@ -45,4 +45,8 @@ export function getDataUser(context, token) {
 
 export function setCookiesAccept(context) {
   context.commit('SetCookiesAccept', true);
+}
+
+export function setFirebaseToken(context, value) {
+  context.commit('SetFirebaseToken', value);
 }

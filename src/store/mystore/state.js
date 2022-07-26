@@ -10,6 +10,7 @@ export default function () {
     user: Cookies.get('lovetcguser'),
     accessToken: Cookies.get('lovetcgtoken'),
     cookies_accepted: Cookies.get('loveCookies'),
+    firebaseToken: Cookies.get('lovefirebaseToken'),
   }
 }
 

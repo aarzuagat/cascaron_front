@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "227567895886",
+    "project_id": "lovetcg-f25b5",
+    "storage_bucket": "lovetcg-f25b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227567895886:android:07387c7613c4d9a96d4a1f",
+        "android_client_info": {
+          "package_name": "com.love.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227567895886-uftib9riqikig0g1lcjoi3hb68df1qj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlCOG_GNqmOEBZMSZjOJ4XV7aU6DAKUQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227567895886-uftib9riqikig0g1lcjoi3hb68df1qj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227567895886:android:24f73f32de280ab66d4a1f",
+        "android_client_info": {
+          "package_name": "com.lovetcg.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227567895886-uftib9riqikig0g1lcjoi3hb68df1qj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlCOG_GNqmOEBZMSZjOJ4XV7aU6DAKUQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227567895886-uftib9riqikig0g1lcjoi3hb68df1qj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
