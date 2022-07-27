@@ -45,7 +45,34 @@
               <div class="row q-gutter-xs custom_css">
                 <div class="col-12">
                   <q-select
-                    :options="tags"
+                    :options="products_filtered"
+                    options-dense
+                    v-model="productSelect"
+                    :option-label="i => i.name"
+                    label-color="white"
+                    input-class="text-white"
+                    popup-content-class="text-white"
+                    options-selected-class="text-white"
+                    outlined
+                    :loading="products_all.length ===0"
+                    :disable="products_all.length ===0"
+                    class="col no-padding"
+                    @filter="filterProducts"
+                    dense
+                    use-input
+                    clearable
+                    @clear="tag = ''"
+                    @remove="tag = ''"
+                    :popup-content-class="$q.screen.gt.sm?`bg-dark-blue dark-blue text-white`:`bg-dark-blue`"
+                    label="Seleccione un producto"
+                    color="white"
+                    :rules="[$rules.required()]"
+                    autofocus
+                  />
+                </div>
+                <div class="col-12">
+                  <q-select
+                    :options="tagOptions"
                     options-dense
                     v-model="tag"
                     :option-label="i => i.tag"
@@ -54,7 +81,6 @@
                     popup-content-class="text-white"
                     options-selected-class="text-white"
                     outlined
-                    :loading="tags.length ===0"
                     class="col no-padding"
                     dense
                     use-input
@@ -64,10 +90,11 @@
                     @clear="tag = ''"
                     @remove="tag = ''"
                     :popup-content-class="$q.screen.gt.sm?`bg-dark-blue dark-blue text-white`:`bg-dark-blue`"
-                    label="Seleccione un producto"
+                    label="Seleccione una etiqueta"
                     color="white"
                     :rules="[$rules.required()]"
                     autofocus
+                    :disable="productSelect === ''"
                   />
                 </div>
                 <div class="col-12 text-right q-gutter-xs">
@@ -171,7 +198,7 @@
                                       :rules="[
                                         $rules.required(),
                                         $rules.decimal(),
-                                        $rules.maxValue(productReal.quantity),
+                                        $rules.maxValue(realQuantity),
                                         $rules.minValue(1)
                                         ]"
                                       autofocus
@@ -180,7 +207,7 @@
                                 </div>
                               </div>
                               <div class="col-5">
-                                Dispones de {{ productReal.quantity }} unidades máximas
+                                Dispones de {{ realQuantity }} unidades máximas
                               </div>
                             </div>
 
@@ -313,21 +340,30 @@ export default {
     lite_mode: {type: Boolean, default: false},
     menu_mode: {type: Boolean, default: false},
     sign_mode: {type: Boolean, default: false},
+    product: {type: Object, default: null},
     lote: {type: Object, default: null},
+    products: {type: Array, default: null},
+    tags: {type: Array, default: null},
   },
   computed: {
     photo_url() {
       return process.env.static + this.productReal?.photo || 'logo.png'
     },
-    tagOptions() {
-      let lotes = this.productReal.lotes.map(i => i.id)
-      if (this.lote) {
-        lotes = this.productReal.lotes.filter(i => i.id === this.lote.id).map(i => i.id)
+    realQuantity(){
+      if (this.loteReal){
+        return this.loteReal.quantityStock
       }
-      const taken = this.sell.map(i => i.code.id).flat(1)
-      const filterByProduct = i => lotes.includes(i.lote_id)
-      const filterTaken = i => !taken.includes(i.id)
-      return this.tags_all.filter(filterByProduct).filter(filterTaken)
+      return this.productReal?.quantity ?? 0
+    },
+    tagOptions() {
+      if (this.productSelect) {
+        let lotes = this.productSelect.lotes.map(i => i.id)
+        const taken = this.sell.map(i => i.code.id).flat(1)
+        const filterByProduct = i => lotes.includes(i.lote_id)
+        const filterTaken = i => !taken.includes(i.id)
+        return this.tags_all.filter(filterByProduct).filter(filterTaken)
+      }
+      return []
     },
     ...mapGetters({
       logged: 'mystore/loggedIn',
@@ -348,23 +384,24 @@ export default {
         lotes: [],
         lite: false
       },
+      productSelect: '',
       waiting: false,
       part: 0,
       stock: 1,
       products_all: [],   //all
-      products: [],  //filtered
+      products_filtered: [],  //filtered
       tags_all: [],   //all
-      tags: [],   //all
+      tags_filtered: [],   //all
       tag: [],   //all
       sell: [],
+      loteReal: null,
     }
   },
   methods: {
     changePart() {
-      const lote = this.products_all.map(i => i.lotes).flat(1).filter(i => i.id === this.tag.lote_id)[0]
-      const producto = this.products_all.filter(i => i.id === lote.product_id)[0]
+      const producto = this.productSelect
+      const lote = this.productSelect.lotes.filter(i => i.id === this.tag.lote_id)[0]
       this.productReal = destructurateObject(this.productReal, producto)
-      this.productReal.sell_price = lote.sell_price
       this.productReal.lotes = producto.lotes
       this.productReal.photo = producto.photo
       this.productReal.name = producto.name
@@ -391,14 +428,32 @@ export default {
         this.part = 2
       }
     },
+    filterProducts(val, update, abort) {
+      update(
+        () => {
+          if (val === '') {
+            this.products_filtered = this.products_all
+          } else {
+            const needle = val.toLowerCase()
+            this.products_filtered = this.products_all.filter(v => v?.name?.toLowerCase().includes(needle))
+          }
+        },
+        ref => {
+          if (val !== '' && ref.options.length > 0) {
+            ref.setOptionIndex(-1) // reset optionIndex in case there is something selected
+            ref.moveOptionSelection(1, true) // focus the first selectable option and do not update the input-value
+          }
+        }
+      )
+    },
     fnProducts(val, update, abort) {
       update(
         () => {
           if (val === '') {
-            this.tags = this.tags_all
+            this.products_filtered = this.products_all
           } else {
             const needle = val.toLowerCase()
-            this.tags = this.tags_all.filter(v => v?.tag?.toLowerCase().includes(needle))
+            this.products_filtered = this.products_all.filter(v => v?.name?.toLowerCase().includes(needle))
           }
         },
         ref => {
@@ -417,10 +472,10 @@ export default {
       update(
         () => {
           if (val === '') {
-            this.tags = this.tags_all.filter(filterByProduct)
+            this.tags_filtered = this.tags_all.filter(filterByProduct)
           } else {
             const needle = val.toLowerCase()
-            this.tags = this.tags_all.filter(filterByProduct).filter(filterTaken).filter(v => v?.tag?.toLowerCase().includes(needle))
+            this.tags_filtered = this.tags_all.filter(filterByProduct).filter(filterTaken).filter(v => v?.tag?.toLowerCase().includes(needle))
           }
         },
         ref => {
@@ -433,6 +488,7 @@ export default {
     },
     cleanSearch() {
       this.part = 0;
+      this.productSelect = ''
       this.productReal = {
         id: 0,
         photo: null,
@@ -440,7 +496,9 @@ export default {
         cost_price: 0,
         quantity: 0,
         name: '',
-        lotes: []
+        tag: '',
+        lotes: [],
+        lite: false
       }
       this.$emit('updated')
     },
@@ -456,41 +514,56 @@ export default {
       this.part = 0;
       this.selling = false
       this.tag = ''
-      this.products = this.products_all = []
-      this.tags = this.tags_all = []
+      this.products_filtered = this.products_all = []
+      this.tags_filtered = this.tags_all = []
       this.$emit('updated')
-
     },
     async findProducts(show_loading = true) {
-      this.products = this.products_all = []
+      this.products_filtered = this.products_all = []
       const products = await getProducts(show_loading);
       if (products.status < 400) {
         const all = products.data.data
-        this.products = this.products_all = all
-        this.tags = this.tags_all = all.map(i => i.lotes).flat(1).map(i => i.tags).flat(1)
-        if (this.lote) {
+        this.products_filtered = this.products_all = all
+        if (this.product) {
+          if (this.product.tag !== 'Sin etiqueta')
+            this.tags_filtered = this.tags_all = all.map(i => i.lotes).flat(1).map(i => i.tags).flat(1)
           this.setItems()
         }
       }
     },
     setItems() {
-      const lote = this.lote
-      const producto = this.products_all.filter(i => i.id === lote.product_id)[0]
+      const producto = this.products_all.filter(i => i.id === this.product.id)[0] ?? null
       if (!producto) return false;
+      this.productSelect = producto
       this.productReal = destructurateObject(this.productReal, producto)
-      this.productReal.sell_price = lote.sell_price
       this.productReal.lotes = producto.lotes
       this.productReal.photo = producto.photo
       this.productReal.name = producto.name
       this.productReal.tag = producto.tag
-      this.productReal.cost_price = lote.cost_price
-      this.productReal.quantity = lote.quantityStock
-      this.part = 1
     }
   },
   mounted() {
-    if (!this.lote) {
-      this.findProducts()
+    if (this.lote) {
+      this.loteReal = this.lote
+    }
+    if (this.product) {
+      this.tags_filtered = this.tags_all = this.product.lotes.map(i => i.tags).flat(1)
+      this.productSelect = this.product
+      this.productReal = destructurateObject(this.productReal, this.product)
+      this.productSelect = this.productReal
+      this.productReal.lotes = this.product.lotes
+      this.productReal.photo = this.product.photo
+      this.productReal.name = this.product.name
+      this.productReal.tag = this.product.tag
+      if (this.product.tag === 'Sin etiqueta') {
+        this.part = 1
+      }
+    } else {
+      if (!this.products)
+        this.findProducts()
+      else {
+        this.products_filtered = this.products_all = this.products
+      }
     }
 
   }

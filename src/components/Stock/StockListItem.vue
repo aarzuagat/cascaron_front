@@ -39,6 +39,15 @@
                 <stock-add :lite-version="true" :product-new="product" @updated="$emit('updated')"/>
                 <product-edit :product-new="product" :lite-version="true" :categories_all="categories"
                               v-if="categories.length  " @updated="$emit('updated')"/>
+                <product-sell
+                  :sign_mode="true"
+                  :product="product"
+                  @updated="$emit('updated')"
+                  :products="products"
+                  :tags="tags"
+                  v-if="products.length > 0"
+                />
+
               </div>
             </div>
           </div>
@@ -61,7 +70,16 @@
               </tr>
               </thead>
               <tbody>
-              <StockItem @updated="$emit('updated')" v-for="(item,index) in product.lotes" :key="item.id" :stock="item" :number="index+1"/>
+              <StockItem
+                @updated="$emit('updated')"
+                v-for="(item,index) in product.lotes"
+                :key="item.id"
+                :stock="item"
+                :number="index+1"
+                :products="products"
+                :product="product"
+
+              />
               </tbody>
             </q-markup-table>
           </q-card-section>
@@ -77,28 +95,32 @@ import ProductEdit from "components/Product/ProductEdit";
 import StockItem from "components/Stock/StockItem";
 import {mapGetters} from "vuex";
 import ProductSell from "components/Product/ProductSell";
+import {getProducts} from "src/store/Product/products";
 
 export default {
   components: {ProductSell, StockItem, ProductEdit, StockSubstract, StockAdd},
   props: {
     product: {type: Object},
+    products: {type: Array},
     number: {type: Number},
     categories: {type: Array},
   },
   computed: {
-    // quantity(){
-    //   if (this.product.tag === 'Todas las unidades')
-    //     return this.product.quantity
-    //   else{
-    //     return
-    //   }
-    // },
+
     ...mapGetters({
       user: 'mystore/user'
     })
   },
   data() {
-    return {}
+    return {
+      tags: [],
+    }
+  },
+  methods: {
+
+  },
+  mounted() {
+
   }
 }
 </script>

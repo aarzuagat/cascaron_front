@@ -16,8 +16,15 @@
     </div>
     <div v-if="stocks.length" class="col-12">
 
-      <StockListItem v-for="(item,index) in stocks.slice(start,end)" :key="item.id" :product="item" :number="index+1"
-                     :categories="categories" @updated="findStock"/>
+      <StockListItem
+        v-for="(item,index) in stocks.slice(start,end)"
+        :key="item.id"
+        :product="item"
+        :number="index+1"
+        :categories="categories"
+        :products="products"
+        @updated="findStock"
+      />
     </div>
     <div class="col-12" v-else>
       <NoData/>
@@ -36,6 +43,7 @@ import {getStock} from "src/store/Stock/stock";
 import StockListItem from "components/Stock/StockListItem";
 import NoData from "components/Extras/NoData";
 import {getCategories} from "src/store/Category/categories";
+import {getProducts} from "src/store/Product/products";
 
 export default {
   components: {NoData, StockListItem},
@@ -47,12 +55,13 @@ export default {
       start: 0,
       end: 20,
       name: '',
-      categories: []
+      categories: [],
+      products: [],
     }
   },
   methods: {
     filterStock() {
-      if (!this.stocks_all.length || !this.name){
+      if (!this.stocks_all.length || !this.name) {
         this.stocks = this.stocks_all
         return false
       }
@@ -65,10 +74,18 @@ export default {
     },
     async findCategories() {
       this.categories = await getCategories(false)
-    }
+    },
+    async findProducts() {
+      const products = await getProducts();
+      if (products.status < 400) {
+        this.products = products.data.data
+
+      }
+    },
   },
   mounted() {
     this.findStock()
+    this.findProducts()
   }
 }
 </script>

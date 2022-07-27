@@ -9,10 +9,18 @@
     <td class="col text-center">{{ formatterDate(stock.created_at) }}</td>
     <td class="col text-center" v-if="user && user.role_id === 1">
       <div class="row items-center justify-center">
-        <product-sell :sign_mode="true" :lote="stock" @updated="$emit('updated')"/>
         <TagPrint
           :lote="stock"
           :lite_mode="true"
+        />
+        <product-sell
+          :sign_mode="true"
+          :product="product"
+          @updated="$emit('updated')"
+          :products="products"
+          :tags="tags"
+          :lote="stock"
+          v-if="products.length > 0"
         />
       </div>
     </td>
@@ -29,7 +37,10 @@ export default {
   components: {ProductSell, TagPrint},
   props: {
     stock: {type: Object},
-    number: {type: Number}
+    number: {type: Number},
+    product:{type:Object,default:null},
+    tags:{type:Array,default:null},
+    products:{type:Array,default:null},
   },
   computed: {
     ...mapGetters({
