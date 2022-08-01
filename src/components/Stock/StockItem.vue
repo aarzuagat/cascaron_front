@@ -20,7 +20,7 @@
           :products="products"
           :tags="tags"
           :lote="stock"
-          v-if="products.length > 0"
+          v-if="stock"
         />
       </div>
     </td>

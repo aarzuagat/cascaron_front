@@ -23,6 +23,7 @@
               :rules="[$rules.required(), $rules.minLength(8)]"
               label="Contraseña"
               dense
+              type="password"
               label-color="white"
               input-class="text-white"
             />
@@ -36,8 +37,6 @@
 
 <script>
 import FormCardAction from "components/Extras/FormCardActions";
-import requestPermission from "src/store/firebase/firebase";
-import {getMessaging, getToken} from "firebase/messaging";
 
 export default {
   components: {FormCardAction},

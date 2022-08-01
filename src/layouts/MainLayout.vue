@@ -16,7 +16,6 @@
 <script>
 import Menu from "components/Layout/Menu";
 import Header from "components/Layout/Header";
-import {getToken} from "firebase/messaging";
 
 export default {
   components: {Header, Menu},

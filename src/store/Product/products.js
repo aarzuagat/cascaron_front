@@ -94,7 +94,7 @@ export function updateStock(object) {
       })
       .catch(err => {
         Loading.hide()
-        if (err.response.data.data)
+        if (err?.response?.data?.data)
           n(err.response.data.data)
         else
           n(`El producto ${object.name ?? ''} en stock no pudo ser actualizado en estos momentos`)

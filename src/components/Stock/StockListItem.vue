@@ -45,7 +45,7 @@
                   @updated="$emit('updated')"
                   :products="products"
                   :tags="tags"
-                  v-if="products.length > 0"
+                  v-if="product"
                 />
 
               </div>
@@ -72,7 +72,7 @@
               <tbody>
               <StockItem
                 @updated="$emit('updated')"
-                v-for="(item,index) in product.lotes"
+                v-for="(item,index) in lotes"
                 :key="item.id"
                 :stock="item"
                 :number="index+1"
@@ -106,7 +106,9 @@ export default {
     categories: {type: Array},
   },
   computed: {
-
+    lotes() {
+      return this.product.lotes.sort((a, b) => a.quantityStock > b.quantityStock)
+    },
     ...mapGetters({
       user: 'mystore/user'
     })
@@ -116,9 +118,7 @@ export default {
       tags: [],
     }
   },
-  methods: {
-
-  },
+  methods: {},
   mounted() {
 
   }

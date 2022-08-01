@@ -1,6 +1,6 @@
 <template>
   <div class="row " :class="lite_mode?'':'full-width'">
-    <q-btn :disable="disabled" no-caps :align="lite_mode?'center':'left'" flat dense text-color="white" color="red"
+    <q-btn v-if="able" no-caps :align="lite_mode?'center':'left'" flat dense text-color="white" color="red"
            :class="lite_mode?'':'full-width'" @click="printTags">
       <q-icon name="mdi-printer" color="red" size="sm"/>
       <span class="q-pl-sm" v-if="!lite_mode">Imprimir etiqueta</span>
@@ -19,8 +19,8 @@ export default {
     lite_mode: {type: Boolean, default: false}
   },
   computed: {
-    disabled() {
-      return this.lote.product.tag !== 'Todas las unidades'
+    able() {
+      return this.lote.product.tag === 'Todas las unidades'
     }
   },
   data() {

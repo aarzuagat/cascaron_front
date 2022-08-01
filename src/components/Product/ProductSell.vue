@@ -20,7 +20,10 @@
     <q-btn color="red-5" class="q-px-sm" dense no-caps v-else label="Vender producto"
            @click="selling = true" rounded/>
 
-    <q-dialog ref="mymodal" v-model="selling" @before-hide="cleanSearch" @before-show="findProducts">
+    <q-dialog ref="mymodal" v-model="selling"
+              @before-hide="cleanSearch"
+              @before-show="loadValues"
+    >
       <div class="row justify-center" style="max-width: 75vw; width: 70vw">
         <div class="col-12">
           <q-card flat square class="bg-darkless-blue no-padding">
@@ -54,7 +57,7 @@
                     popup-content-class="text-white"
                     options-selected-class="text-white"
                     outlined
-                    :loading="products_all.length ===0"
+                    :loading="products_all.length ===0 && !product"
                     :disable="products_all.length ===0"
                     class="col no-padding"
                     @filter="filterProducts"
@@ -349,8 +352,8 @@ export default {
     photo_url() {
       return process.env.static + this.productReal?.photo || 'logo.png'
     },
-    realQuantity(){
-      if (this.loteReal){
+    realQuantity() {
+      if (this.loteReal) {
         return this.loteReal.quantityStock
       }
       return this.productReal?.quantity ?? 0
@@ -407,11 +410,13 @@ export default {
       this.productReal.name = producto.name
       this.productReal.tag = producto.tag
       this.productReal.cost_price = lote.cost_price
+      this.productReal.sell_price = lote.sell_price
       this.productReal.quantity = lote.tags.filter(i => !i.deleted_at).length
       this.part = 1
     },
     secondPart() {
       if (this.productReal.tag !== 'Todas las unidades') {
+        console.log('Im here')
         this.productReal.lite = true
         this.submit()
       } else {
@@ -489,17 +494,17 @@ export default {
     cleanSearch() {
       this.part = 0;
       this.productSelect = ''
-      this.productReal = {
-        id: 0,
-        photo: null,
-        sell_price: 0,
-        cost_price: 0,
-        quantity: 0,
-        name: '',
-        tag: '',
-        lotes: [],
-        lite: false
-      }
+      // this.productReal = {
+      //   id: 0,
+      //   photo: null,
+      //   sell_price: 0,
+      //   cost_price: 0,
+      //   quantity: 0,
+      //   name: '',
+      //   tag: '',
+      //   lotes: [],
+      //   lite: false
+      // }
       this.$emit('updated')
     },
     async submit() {
@@ -508,8 +513,9 @@ export default {
         sell: this.sell,
         name: this.productReal.name,
         quantity: this.stock,
-        lote: this.lote ?? null
+        lote: this.loteReal ?? null
       }
+      console.log(obj)
       await updateStock(obj)
       this.part = 0;
       this.selling = false
@@ -531,41 +537,54 @@ export default {
         }
       }
     },
-    setItems() {
-      const producto = this.products_all.filter(i => i.id === this.product.id)[0] ?? null
-      if (!producto) return false;
+    /**
+     * @param {Object} producto
+     * @param {Array} lotes
+     */
+    setItems(producto, lotes = null) {
       this.productSelect = producto
       this.productReal = destructurateObject(this.productReal, producto)
-      this.productReal.lotes = producto.lotes
+      if (lotes) {
+        this.productReal.lotes = this.productSelect.lotes = lotes
+        this.tags_filtered = this.tags_all = lotes.map(i => i.tags).flat(1)
+      } else {
+        console.log('agregando los lotes')
+        this.productReal.lotes = producto.lotes
+        this.tags_filtered = this.tags_all = this.productReal.lotes.flat(1).map(i => i.tags).flat(1)
+        console.log(this.productReal.lotes.map(i => i.tags).flat(1))
+      }
       this.productReal.photo = producto.photo
       this.productReal.name = producto.name
       this.productReal.tag = producto.tag
+      if (lotes?.length === 1){
+        this.productReal.cost_price = lotes[0].cost_price
+        this.productReal.sell_price = lotes[0].sell_price
+      }
+    },
+    // loreini
+    loadValues() {
+      if (this.lote) {
+        this.loteReal = this.lote
+        const product = this.loteReal.product
+        // this.productReal = destructurateObject(this.productReal,this.loteReal)
+        this.setItems(product, [this.lote])
+        this.part = 1
+      } else if (this.product) {
+        console.log('estoy en producto')
+        this.productSelect = this.productReal = this.product
+        this.setItems(this.product)
+        if (this.product.tag === 'Sin etiqueta') {
+          this.part = 1
+        }
+      }
+      // if (!this.products)
+      //   this.findProducts()
+      // else {
+      //   this.products_filtered = this.products_all = this.products
+      // }
     }
   },
   mounted() {
-    if (this.lote) {
-      this.loteReal = this.lote
-    }
-    if (this.product) {
-      this.tags_filtered = this.tags_all = this.product.lotes.map(i => i.tags).flat(1)
-      this.productSelect = this.product
-      this.productReal = destructurateObject(this.productReal, this.product)
-      this.productSelect = this.productReal
-      this.productReal.lotes = this.product.lotes
-      this.productReal.photo = this.product.photo
-      this.productReal.name = this.product.name
-      this.productReal.tag = this.product.tag
-      if (this.product.tag === 'Sin etiqueta') {
-        this.part = 1
-      }
-    } else {
-      if (!this.products)
-        this.findProducts()
-      else {
-        this.products_filtered = this.products_all = this.products
-      }
-    }
-
   }
 }
 </script>
