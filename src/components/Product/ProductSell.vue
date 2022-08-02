@@ -62,6 +62,7 @@
                     class="col no-padding"
                     @filter="filterProducts"
                     dense
+                    @input="setInitial"
                     use-input
                     clearable
                     @clear="tag = ''"
@@ -364,6 +365,7 @@ export default {
         const taken = this.sell.map(i => i.code.id).flat(1)
         const filterByProduct = i => lotes.includes(i.lote_id)
         const filterTaken = i => !taken.includes(i.id)
+        this.tags_filtered = this.tags_all = this.productSelect.lotes.flat(1).map(i => i.tags).flat(1)
         return this.tags_all.filter(filterByProduct).filter(filterTaken)
       }
       return []
@@ -401,22 +403,38 @@ export default {
     }
   },
   methods: {
+    setInitial() {
+      if (this.productSelect.tag !== 'Todas las unidades') {
+        if (!this.product){
+          this.productReal = this.productSelect
+          this.tags_filtered = this.tags_all = this.productReal.lotes.flat(1).map(i => i.tags).flat(1)
+        }
+        this.destructure(this.productSelect)
+        this.part = 1
+      }
+
+
+    },
     changePart() {
       const producto = this.productSelect
-      const lote = this.productSelect.lotes.filter(i => i.id === this.tag.lote_id)[0]
+      const lote = this.productSelect.lotes?.filter(i => i.id === this.tag.lote_id)[0]
       this.productReal = destructurateObject(this.productReal, producto)
+      this.destructure(producto)
+      if (lote) {
+        this.productReal.cost_price = lote.cost_price
+        this.productReal.sell_price = lote.sell_price
+        this.productReal.quantity = lote.tags.filter(i => !i.deleted_at).length
+      }
+      this.part = 1
+    },
+    destructure(producto) {
       this.productReal.lotes = producto.lotes
       this.productReal.photo = producto.photo
       this.productReal.name = producto.name
       this.productReal.tag = producto.tag
-      this.productReal.cost_price = lote.cost_price
-      this.productReal.sell_price = lote.sell_price
-      this.productReal.quantity = lote.tags.filter(i => !i.deleted_at).length
-      this.part = 1
     },
     secondPart() {
       if (this.productReal.tag !== 'Todas las unidades') {
-        console.log('Im here')
         this.productReal.lite = true
         this.submit()
       } else {
@@ -548,7 +566,6 @@ export default {
         this.productReal.lotes = this.productSelect.lotes = lotes
         this.tags_filtered = this.tags_all = lotes.map(i => i.tags).flat(1)
       } else {
-        console.log('agregando los lotes')
         this.productReal.lotes = producto.lotes
         this.tags_filtered = this.tags_all = this.productReal.lotes.flat(1).map(i => i.tags).flat(1)
         console.log(this.productReal.lotes.map(i => i.tags).flat(1))
@@ -556,7 +573,7 @@ export default {
       this.productReal.photo = producto.photo
       this.productReal.name = producto.name
       this.productReal.tag = producto.tag
-      if (lotes?.length === 1){
+      if (lotes?.length === 1) {
         this.productReal.cost_price = lotes[0].cost_price
         this.productReal.sell_price = lotes[0].sell_price
       }
@@ -576,12 +593,9 @@ export default {
         if (this.product.tag === 'Sin etiqueta') {
           this.part = 1
         }
+      } else {
+        this.findProducts()
       }
-      // if (!this.products)
-      //   this.findProducts()
-      // else {
-      //   this.products_filtered = this.products_all = this.products
-      // }
     }
   },
   mounted() {

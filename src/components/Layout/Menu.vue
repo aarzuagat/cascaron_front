@@ -25,7 +25,7 @@
         <div class="bg-dark-blue q-pl-xl text-blue-1">
           <StockListButton/>
 
-<!--          <ProductSell :menu_mode="true" @updated="$emit('updated')"/>-->
+          <ProductSell :menu_mode="true" @updated="$emit('updated')"/>
           <ProductSearch :categories="categories" :menu_mode="true"/>
         </div>
       </q-expansion-item>
