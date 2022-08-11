@@ -115,7 +115,7 @@
                           color="white"
                           :rules="[$rules.required()]"
                         >
-                          <template v-slot:no-option>
+                          <template v-slot:after-options>
                             <q-item>
                               <q-item-section class="text-grey">
                                 <CategoryAdd class="full-width" :full-width="true" @newCategory="addCategory"/>

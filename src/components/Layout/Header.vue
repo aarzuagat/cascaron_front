@@ -5,7 +5,7 @@
         <q-btn dense flat round icon="menu" @click="setLeft"/>
       </div>
       <div class="col-2 q-pl-sm q-py-xs">
-        <img src="/icons/logo.png" style="max-height: 2rem">
+        <img src="/icons/logo.png" style="max-height: 2rem" @click="$router.push('/')">
       </div>
       <div class="col">
         <ProductSearcher/>

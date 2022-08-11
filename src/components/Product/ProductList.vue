@@ -1,5 +1,5 @@
 <template>
-  <div class="row " :class="products.length < 3?'':'items-center justify-center'">
+  <div class="row " :class="products.length > 3?'':'items-center justify-center'">
     <div v-if="!products.length" class="col-12">
       <NoData/>
     </div>

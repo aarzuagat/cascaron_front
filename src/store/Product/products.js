@@ -119,9 +119,10 @@ export function downloadProductTag(object) {
         link.setAttribute('download', `${name}.pdf`)
         document.body.appendChild(link)
         link.click()
-        const blob = new Blob([response.data], { type: response.data.type })
-        const url2 = window.URL.createObjectURL(blob)
-        resolve(url2)
+        console.log(response.data)
+        // const blob = new Blob([response.data], { type: response.data.type })
+        // const url2 = window.URL.createObjectURL(blob)
+        // resolve(url2)
         // saveAs(response.data.data, `Factura_.pdf`);
       }
     })
