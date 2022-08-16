@@ -233,8 +233,7 @@
                 </div>
               </q-form>
             </q-card-section>
-
-          </q-card>
+z          </q-card>
           <q-card v-if="part === 2" square class="q-mt-sm bg-darkless-blue" flat>
             <q-card-section class="q-mt-sm">
               <q-form @submit="submit">
@@ -366,7 +365,7 @@ export default {
         const filterByProduct = i => lotes.includes(i.lote_id)
         const filterTaken = i => !taken.includes(i.id)
         this.tags_filtered = this.tags_all = this.productSelect.lotes.flat(1).map(i => i.tags).flat(1)
-        return this.tags_all.filter(filterByProduct).filter(filterTaken)
+        return this.tags_all.filter(filterByProduct).filter(filterTaken) ?? []
       }
       return []
     },

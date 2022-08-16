@@ -13,7 +13,7 @@ export function getStock(show_loading = true) {
       })
       .catch(err => {
         Loading.hide()
-        n('El stock no están disponibles en estos momentos')
+        n('El stock no está disponible en estos momentos')
         reject(err)
       })
   })
@@ -95,6 +95,42 @@ export function updateStock(object) {
       .catch(err => {
         Loading.hide()
         n(`El producto ${object.name ?? ''} en stock no pudo ser actualizado en estos momentos`)
+        reject(err)
+      })
+  })
+}
+
+
+export function getOperations(show_loading = true) {
+  if (show_loading)
+    Loading.show()
+  return new Promise((resolve, reject) => {
+    axiosConfig.get('stock-operation')
+      .then(response => {
+        Loading.hide()
+        resolve(response)
+      })
+      .catch(err => {
+        Loading.hide()
+        n('El stock no está disponible en estos momentos')
+        reject(err)
+      })
+  })
+}
+
+export function deleteOperation(object) {
+  Loading.show()
+  const name = object.name
+  return new Promise((resolve, reject) => {
+    axiosConfig.post(`stock-operation-cancel`, object)
+      .then(response => {
+        p(`Operación ${name} cancelada correctamente`)
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n(`La operación ${object.name ?? ''} no pudo ser cancelada en estos momentos`)
         reject(err)
       })
   })

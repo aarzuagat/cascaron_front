@@ -122,6 +122,13 @@
                               </q-item-section>
                             </q-item>
                           </template>
+                          <template v-slot:no-option>
+                            <q-item>
+                              <q-item-section class="text-grey">
+                                <CategoryAdd class="full-width" :full-width="true" @newCategory="addCategory"/>
+                              </q-item-section>
+                            </q-item>
+                          </template>
                         </q-select>
                       </div>
                     </div>

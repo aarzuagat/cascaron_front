@@ -2,6 +2,7 @@ import axios from 'axios'
 import {Cookies} from "quasar";
 import store from '../store'
 import {n} from "src/utils/mynotify";
+import Vue from "vue";
 
 
 const axiosConfig = axios.create({
@@ -17,7 +18,6 @@ axiosConfig.interceptors.request.use(
   request => {
     request.metadata = {startTime: new Date()};
     request.headers.authorization = 'Bearer ' + Cookies.get('lovetcgtoken');
-    // }
     return request;
   },
   error => {
@@ -86,6 +86,6 @@ axiosConfig.interceptors.response.use(
   }
 );
 
-// Vue.prototype.$axios = axiosConfig;
+Vue.prototype.$axios = axiosConfig;
 
 export default axiosConfig

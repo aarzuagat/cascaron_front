@@ -114,12 +114,16 @@ export function downloadProductTag(object) {
         const url = URL.createObjectURL(new Blob([response.data], {
           type: 'application/pdf'
         }))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', `${name}.pdf`)
-        document.body.appendChild(link)
-        link.click()
-        console.log(response.data)
+        // const link = document.createElement('a')
+        // link.href = url
+        // link.setAttribute('download', `${name}.pdf`)
+        // document.body.appendChild(link)
+        // link.click()
+        // console.log(response.data)
+
+        // var file = new Blob([data], {type: 'application/pdf'});
+        // var fileURL = URL.createObjectURL(file);
+        window.open(url);
         // const blob = new Blob([response.data], { type: response.data.type })
         // const url2 = window.URL.createObjectURL(blob)
         // resolve(url2)

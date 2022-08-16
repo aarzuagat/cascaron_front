@@ -1,4 +1,5 @@
 import security from "src/router/modules/security";
+import operations from "src/router/modules/operations";
 
 const routes = [
   {
@@ -7,7 +8,8 @@ const routes = [
     children: [
       {path: '', name: 'home', component: () => import('pages/Landing/Index')},
       {path: 'stock', name: 'stock', component: () => import('pages/Stock/Stock')},
-      ...security
+      ...security,
+      ...operations
     ]
   },
 
