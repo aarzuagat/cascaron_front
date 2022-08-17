@@ -77,3 +77,22 @@ export function deleteIncident(object) {
       })
   })
 }
+
+
+
+export function filterIncident(object) {
+  Loading.show()
+  return new Promise((resolve, reject) => {
+    axiosConfig.post('incidents-filter', object)
+      .then(response => {
+        p(`Incidentes obtenidos correctamente`)
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n(`Los incidentes no pudieron ser obtenidos en estos momentos`)
+        reject(err)
+      })
+  })
+}

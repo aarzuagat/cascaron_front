@@ -67,6 +67,14 @@
         :key="key"
       />
     </div>
+    <div v-if="incidents.length" class="col-12">
+      <ColumnChart
+        :dataseries="columnSeriesIncidents[1]"
+        :categories="columnSeriesIncidents[0]"
+        title="Incidentes"
+        :key="key"
+      />
+    </div>
     <div class="col-12" v-else>
       <NoData/>
     </div>
@@ -79,7 +87,7 @@
   </div>
 </template>
 <script>
-import {filterStock, getOperations} from "src/store/Stock/stock";
+import {filterStock} from "src/store/Stock/stock";
 import StockListItem from "components/Stock/StockListItem";
 import NoData from "components/Extras/NoData";
 import StockOperationList from "components/StockOperation/StockOperationList";
@@ -87,6 +95,7 @@ import MyTitle from "components/Extras/MyTitle";
 import {date} from "quasar";
 import ColumnChart from "components/Graphs/ColumnChart";
 import {formatDate, uniques} from "src/utils/utils";
+import {filterIncident} from "src/store/Incident/incident";
 
 export default {
   components: {ColumnChart, MyTitle, StockOperationList, NoData, StockListItem},
@@ -103,11 +112,25 @@ export default {
         dataseries.push(item)
       })
       console.log(dataseries)
-      return [products, dataseries];
+      return [['Productos'], dataseries];
+    },
+    columnSeriesIncidents() {
+      const products = uniques(this.incidents.map(i => i.author))
+      let dataseries = []
+      products.forEach(i => {
+        const item = {
+          name: i,
+          data: [this.incidents.filter(y => y.author === i).length]
+        }
+        dataseries.push(item)
+      })
+      console.log(dataseries)
+      return [['Trabajadores'], dataseries];
     }
   },
   data() {
     return {
+      incidents: [],
       stocks: [],
       stocks_all: [],
       start: 0,
@@ -123,13 +146,15 @@ export default {
   },
   methods: {
     closeCalendar(name) {
+      this.filtered = true
       this.$refs[name].hide()
-    },   optionStartFilter(date2) {
+    }, optionStartFilter(date2) {
       let ts = Date.now();
       let formattedString = date.formatDate(ts, 'YYYY/MM/DD');
       return date2 <= formattedString;
     },
     optionEndFilter(date2) {
+      this.filtered = true
       let ts = formatDate(this.date_start);
       let now = Date.now();
       let formattedString = date.formatDate(ts, 'YYYY/MM/DD');
@@ -145,7 +170,9 @@ export default {
       this.stocks = this.stocks_all.filter(i => i.name.toLowerCase().includes(this.name.toLowerCase()))
     },
     async findStock() {
-      const sd = this.date_start
+      let sd = this.date_start
+      if (!this.filtered)
+        sd = '1/1/2010'
       const de = this.date_end
       const obj = {
         start: sd,
@@ -155,13 +182,24 @@ export default {
       this.stocks = this.stocks_all = all
       this.key++
     },
+    async findIncidents() {
+      let sd = this.date_start
+      if (!this.filtered)
+        sd = '1/1/2010'
+      const de = this.date_end
+      const obj = {
+        start: sd,
+        end: de,
+      }
+      this.incidents = await filterIncident(obj)
+      this.key++
+    },
   },
   mounted() {
     this.date_start = date.formatDate(Date.now(), 'DD/MM/YYYY')
     this.date_end = date.formatDate(Date.now(), 'DD/MM/YYYY')
-    setTimeout(() => {
-      this.findStock()
-    }, 2000)
+    this.findStock()
+    this.findIncidents()
   }
 }
 </script>

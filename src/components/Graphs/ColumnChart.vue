@@ -6,7 +6,6 @@
 
 <script>
 import {Chart} from 'highcharts-vue'
-import accessibility from "highcharts/modules/accessibility";
 
 export default {
   name: "ColumnChart",
