@@ -26,10 +26,15 @@
           <StockListButton/>
           <ProductSell :menu_mode="true" @updated="$emit('updated')"/>
           <ProductSearch :categories="categories" :menu_mode="true"/>
-          <q-btn class="full-width"  dense no-caps @click="$router.push('operations')" flat text-color="white" color="red"
+          <q-btn class="full-width"  dense no-caps @click="$router.push({name:'operations'})" flat text-color="white" color="red"
                  align="left">
             <q-icon name="mdi-format-list-checks" color="white" size="sm"/>
             <span class="q-pl-sm">Operaciones</span>
+          </q-btn>
+          <q-btn class="full-width"  dense no-caps @click="$router.push({name:'statics'})" flat text-color="white" color="red"
+                 align="left">
+            <q-icon name="mdi-chart-bar" color="white" size="sm"/>
+            <span class="q-pl-sm">Estadísticas</span>
           </q-btn>
         </div>
       </q-expansion-item>

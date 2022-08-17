@@ -135,3 +135,21 @@ export function deleteOperation(object) {
       })
   })
 }
+
+
+export function filterStock(object) {
+  Loading.show()
+  return new Promise((resolve, reject) => {
+    axiosConfig.post('filter-operations', object)
+      .then(response => {
+        p(`Ventas obtenidas correctamente`)
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n(`Las ventas no pudieron ser obtenidas en estos momentos`)
+        reject(err)
+      })
+  })
+}
