@@ -19,6 +19,22 @@ export function getProducts(show_loading = true) {
   })
 }
 
+export function getProductsLite(show_loading = true) {
+  if (show_loading)
+    Loading.show()
+  return new Promise((resolve, reject) => {
+    axiosConfig.get('products-lite')
+      .then(response => {
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n('Los productos no están disponibles en estos momentos')
+        reject(err)
+      })
+  })
+}
 
 export function postProduct(object) {
   Loading.show()

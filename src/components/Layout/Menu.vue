@@ -36,6 +36,11 @@
             <q-icon name="mdi-chart-bar" color="white" size="sm"/>
             <span class="q-pl-sm">Estadísticas</span>
           </q-btn>
+          <q-btn class="full-width"  dense no-caps @click="$router.push({name:'incident'})" flat text-color="white" color="red"
+                 align="left">
+            <q-icon name="mdi-format-list-text" color="white" size="sm"/>
+            <span class="q-pl-sm">Incidentes</span>
+          </q-btn>
         </div>
       </q-expansion-item>
 
