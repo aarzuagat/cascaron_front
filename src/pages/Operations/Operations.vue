@@ -1,18 +1,35 @@
 <template>
   <div class="row text-white dark-blue">
     <div class="col-12">
-      <q-input
-        v-model="name"
-        :disable="!stocks_all.length "
-        dense
-        label="Filtrar"
-        label-color="white"
-        input-class="text-white q-pa-sm"
-        @input="filterStock"
-        debounce="500"
-        clearable
-        @clear="name = ''"
-      />
+      <div class="row items-center">
+        <div class="col-12 col-sm-10">
+          <q-input class="no-padding full-width" v-model="date_start" filled dense
+                   label="Fecha" label-color="white"
+                   @input="findStock"
+                   :rules="[$rules.required()]">
+            <template v-slot:append>
+              <q-icon name="mdi-calendar"
+                      class="cursor-pointer" color="white">
+                <q-popup-proxy ref="qDateProxy2" transition-show="scale"
+                               transition-hide="scale">
+                  <q-date v-model="date_start" minimal mask="DD/MM/YYYY"
+                          @input="closeCalendar('qDateProxy2'); findStock"
+                          :options="optionStartFilter">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Cerrar"
+                             color="primary"
+                             flat/>
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
+        <div class="col-12 col-sm text-center">
+          <q-btn no-caps dense label="Filtrar" icon="mdi-filter" @click="findStock"/>
+        </div>
+      </div>
     </div>
     <div class="col-12">
       <MyTitle title="Listado de operaciones realizadas"/>
@@ -41,6 +58,7 @@ import StockListItem from "components/Stock/StockListItem";
 import NoData from "components/Extras/NoData";
 import StockOperationList from "components/StockOperation/StockOperationList";
 import MyTitle from "components/Extras/MyTitle";
+import {date} from "quasar";
 
 export default {
   components: {MyTitle, StockOperationList, NoData, StockListItem},
@@ -54,9 +72,18 @@ export default {
       name: '',
       categories: [],
       products: [],
+      date_start: date.formatDate(Date.now(), 'DD/MM/YYYY')
     }
   },
   methods: {
+    closeCalendar(name) {
+      this.$refs[name].hide()
+    },
+    optionStartFilter(date2) {
+      let ts = Date.now();
+      let formattedString = date.formatDate(ts, 'YYYY/MM/DD');
+      return date2 <= formattedString;
+    },
     filterStock() {
       if (!this.stocks_all.length || !this.name) {
         this.stocks = this.stocks_all
@@ -65,7 +92,11 @@ export default {
       this.stocks = this.stocks_all.filter(i => i.name.toLowerCase().includes(this.name.toLowerCase()))
     },
     async findStock() {
-      const all = await getOperations()
+      const obj = {
+        date: this.date_start
+      }
+      console.log(obj)
+      const all = await getOperations(true, obj)
       console.log(all)
       this.stocks = this.stocks_all = all.data.data
     },

@@ -101,11 +101,12 @@ export function updateStock(object) {
 }
 
 
-export function getOperations(show_loading = true) {
+export function getOperations(show_loading = true, object) {
   if (show_loading)
     Loading.show()
   return new Promise((resolve, reject) => {
-    axiosConfig.get('stock-operation')
+    console.log(object)
+    axiosConfig.post('stock-operation-all', object)
       .then(response => {
         Loading.hide()
         resolve(response)

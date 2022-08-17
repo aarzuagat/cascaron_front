@@ -118,26 +118,25 @@ export default {
       date_start: '',
       date_end: '',
       filtered: false,
-      key:0
+      key: 0
     }
   },
   methods: {
-    optionStartFilter(date2) {
+    closeCalendar(name) {
+      this.$refs[name].hide()
+    },   optionStartFilter(date2) {
       let ts = Date.now();
       let formattedString = date.formatDate(ts, 'YYYY/MM/DD');
       return date2 <= formattedString;
     },
     optionEndFilter(date2) {
       let ts = formatDate(this.date_start);
-      console.log(ts)
       let now = Date.now();
       let formattedString = date.formatDate(ts, 'YYYY/MM/DD');
       let formattedString2 = date.formatDate(now, 'YYYY/MM/DD');
       return date2 >= formattedString && date2 <= formattedString2;
     },
-    closeCalendar(name) {
-      this.$refs[name].hide()
-    },
+
     filterStock() {
       if (!this.stocks_all.length || !this.name) {
         this.stocks = this.stocks_all
@@ -154,7 +153,7 @@ export default {
       }
       const all = await filterStock(obj)
       this.stocks = this.stocks_all = all
-      this.key ++
+      this.key++
     },
   },
   mounted() {
