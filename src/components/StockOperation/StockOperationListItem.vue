@@ -14,7 +14,7 @@
           {{ index }}
         </div>
         <div class="col">
-          {{ $formatterDate(operation.created_at) }}
+          {{ $formatterDateTime(operation.created_at) }}
         </div>
         <div class="col">
           {{ operation.lote.product.name }}
@@ -28,7 +28,7 @@
         <div class="col " v-if="!lite">
           <div class="row items-center flex-center">
             <StockOperationCancel :operation="operation" @update="$emit('update')"/>
-            <StockOperationChange/>
+            <StockOperationChange :operation="operation" @update="$emit('update')"/>
           </div>
         </div>
       </div>

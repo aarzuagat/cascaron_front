@@ -153,3 +153,20 @@ export function downloadProductTag(object) {
       })
   })
 }
+
+export function getProductsWithTags(show_loading = true) {
+  if (show_loading)
+    Loading.show()
+  return new Promise((resolve, reject) => {
+    axiosConfig.get('products-withTags')
+      .then(response => {
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n('Los productos no están disponibles en estos momentos')
+        reject(err)
+      })
+  })
+}

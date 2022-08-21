@@ -154,3 +154,22 @@ export function filterStock(object) {
       })
   })
 }
+
+
+export function changeOperation(object) {
+  Loading.show()
+  const name = object.name
+  return new Promise((resolve, reject) => {
+    axiosConfig.post(`stock-operation-change`, object)
+      .then(response => {
+        p(`Operación ${name} cancelada correctamente`)
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n(`La operación ${object.name ?? ''} no pudo ser cancelada en estos momentos`)
+        reject(err)
+      })
+  })
+}
