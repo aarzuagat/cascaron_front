@@ -173,3 +173,22 @@ export function changeOperation(object) {
       })
   })
 }
+
+
+export function deleteItemOperation(object) {
+  Loading.show()
+  const name = object.tag
+  return new Promise((resolve, reject) => {
+    axiosConfig.post(`stock-operation-delete-item`, object)
+      .then(response => {
+        p(`Elemento ${name} eliminado correctamente`)
+        Loading.hide()
+        resolve(response.data.data)
+      })
+      .catch(err => {
+        Loading.hide()
+        n(`La elemento ${object.name ?? ''} no pudo ser eliminado en estos momentos`)
+        reject(err)
+      })
+  })
+}

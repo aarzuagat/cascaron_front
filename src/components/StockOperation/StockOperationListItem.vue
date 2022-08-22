@@ -28,7 +28,7 @@
         <div class="col " v-if="!lite">
           <div class="row items-center flex-center">
             <StockOperationCancel :operation="operation" @update="$emit('update')"/>
-            <StockOperationChange :operation="operation" @update="$emit('update')"/>
+<!--            <StockOperationChange :operation="operation" @update="$emit('update')"/>-->
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
 
 <script>
 import StockOperationCancel from "components/StockOperation/StockOperationCancel";
-import StockOperationChange from "components/StockOperation/StockOperationChange";
+import StockOperationChange from "components/StockOperationChange/StockOperationChange";
 
 export default {
   name: "StockOperationListItem",
