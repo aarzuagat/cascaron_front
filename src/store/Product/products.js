@@ -101,6 +101,7 @@ export function deleteProduct(object) {
 export function updateStock(object) {
   Loading.show()
   const name = object.name ?? object.get('name')
+  console.log(object)
   return new Promise((resolve, reject) => {
     axiosConfig.post('sellProduct', object)
       .then(response => {

@@ -95,9 +95,7 @@ export default {
       const obj = {
         date: this.date_start
       }
-      console.log(obj)
       const all = await getOperations(true, obj)
-      console.log(all)
       this.stocks = this.stocks_all = all.data.data
     },
 

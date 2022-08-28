@@ -3,8 +3,8 @@
     <div class="col-12 q-py-md" v-if="lite">
       <div class="row text-left">
         Fecha de compra: {{ $formatterDate(operation.created_at) }}
-        <br>Nombre: {{ operation.lote.product.name }}
-        <br>Precio de venta: {{ $formatterCurrency(operation.lote.sell_price) }}
+        <br>Nombre: {{ operation.lote.product.name ?? '-' }}
+        <br>Precio de venta: {{ $formatterCurrency(sell_price) }}
         <br>Cantidades vendidas: {{ operation.quantity }}
       </div>
     </div>
@@ -17,10 +17,10 @@
           {{ $formatterDateTime(operation.created_at) }}
         </div>
         <div class="col">
-          {{ operation.lote.product.name }}
+          {{ name }}
         </div>
         <div class="col text-right">
-          {{ $formatterCurrency(operation.lote.sell_price) }}
+          {{ $formatterCurrency(sell_price) }}
         </div>
         <div class="col text-center">
           {{ operation.quantity }}
@@ -28,7 +28,7 @@
         <div class="col " v-if="!lite">
           <div class="row items-center flex-center">
             <StockOperationCancel :operation="operation" @update="$emit('update')"/>
-<!--            <StockOperationChange :operation="operation" @update="$emit('update')"/>-->
+            <StockOperationChange :operation="operation" @update="$emit('update')"/>
           </div>
         </div>
       </div>
@@ -52,6 +52,14 @@ export default {
     operation: {type: Object},
     index: {type: Number},
     lite: {type: Boolean, default: false},
+  },
+  computed: {
+    sell_price() {
+      return this.operation?.lote?.sell_price ?? 0
+    },
+    name() {
+      return this.operation?.lote?.product?.name ?? '-'
+    }
   },
   data() {
     return {}

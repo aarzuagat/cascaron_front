@@ -33,8 +33,8 @@
                       @updated="$emit('updated')"
                       :categories_all="categories_all"
                     />
-                    <ProductSell :lite_mode="true" :product="product" v-if="user && user.role_id < 3"
-                                 class="col-12 borderx"/>
+                    <ProductSellB :lite_mode="true" :product="product" v-if="user && user.role_id < 3"
+                                  class="col-12 borderx"/>
                     <StockAdd
                       v-if="user && user.role_id === 1"
                       :product-new="product"
@@ -58,10 +58,10 @@ import ProductEdit from "components/Product/ProductEdit";
 import TagPrint from "components/Product/TagPrint";
 import {mapGetters} from "vuex";
 import ProductDelete from "components/Product/ProductDelete";
-import ProductSell from "components/Product/ProductSell";
+import ProductSellB from "components/Product/ProductSellB";
 
 export default {
-  components: {ProductSell, ProductDelete, TagPrint, ProductEdit, StockAdd},
+  components: {ProductSellB, ProductDelete, TagPrint, ProductEdit, StockAdd},
   props: {
     index: {type: Number},
     product: {type: Object},

@@ -24,7 +24,7 @@
       >
         <div class="bg-dark-blue q-pl-xl text-blue-1">
           <StockListButton/>
-          <ProductSell :menu_mode="true" @updated="$emit('updated')"/>
+          <ProductSellA :menu_mode="true" @updated="$emit('updated')"/>
           <ProductSearch :categories="categories" :menu_mode="true"/>
           <q-btn class="full-width"  dense no-caps @click="$router.push({name:'operations'})" flat text-color="white" color="red"
                  align="left">
@@ -50,12 +50,12 @@
 
 <script>
 import {mapGetters} from "vuex";
-import ProductSell from "components/Product/ProductSell";
 import ProductSearch from "components/Product/ProductSearch";
 import StockListButton from "components/Stock/StockListButton";
+import ProductSellA from "components/Product/ProductSellA";
 
 export default {
-  components: {StockListButton, ProductSearch, ProductSell},
+  components: {ProductSellA, StockListButton, ProductSearch},
   // name: 'ComponentName',
   computed: {
     ...mapGetters({

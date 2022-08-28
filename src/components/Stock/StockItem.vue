@@ -13,8 +13,7 @@
           :lote="stock"
           :lite_mode="true"
         />
-        <product-sell
-          :sign_mode="true"
+        <ProductSellC
           :product="product"
           @updated="$emit('updated')"
           :products="products"
@@ -31,10 +30,10 @@
 import {formatCurrency, formatDate} from "src/utils/utils";
 import TagPrint from "components/Product/TagPrint";
 import {mapGetters} from "vuex";
-import ProductSell from "components/Product/ProductSell";
+import ProductSellC from "components/Product/ProductSellC";
 
 export default {
-  components: {ProductSell, TagPrint},
+  components: {ProductSellC,  TagPrint},
   props: {
     stock: {type: Object},
     number: {type: Number},

@@ -3,12 +3,11 @@
 
     <div class="col-12">
       <q-expansion-item
-        expand-separator
-        icon="perm_identity"
         label="Lotes"
         class="full-width"
         v-if="number=== 1"
         dense
+        expand-icon-class="text-dark-blue q-px-sm"
       >
         <template v-slot:header>
           <div class="row full-width items-center">
@@ -39,8 +38,7 @@
                 <stock-add :lite-version="true" :product-new="product" @updated="$emit('updated')"/>
                 <product-edit :product-new="product" :lite-version="true" :categories_all="categories"
                               v-if="categories.length  " @updated="$emit('updated')"/>
-                <product-sell
-                  :sign_mode="true"
+                <ProductSellB
                   :product="product"
                   @updated="$emit('updated')"
                   :products="products"
@@ -94,11 +92,10 @@ import StockSubstract from "components/Stock/StockSubstract";
 import ProductEdit from "components/Product/ProductEdit";
 import StockItem from "components/Stock/StockItem";
 import {mapGetters} from "vuex";
-import ProductSell from "components/Product/ProductSell";
-import {getProducts} from "src/store/Product/products";
+import ProductSellB from "components/Product/ProductSellB";
 
 export default {
-  components: {ProductSell, StockItem, ProductEdit, StockSubstract, StockAdd},
+  components: {ProductSellB,  StockItem, ProductEdit, StockSubstract, StockAdd},
   props: {
     product: {type: Object},
     products: {type: Array},
