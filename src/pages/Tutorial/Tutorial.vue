@@ -4,7 +4,7 @@
       <div class="col-12">
         <MyTitle title="Videos tutoriales de LoveApp"/>
       </div>
-      <div class="col-12 col-sm-4 q-px-sm" v-for="(item,key) in list" :key="key">
+      <div class="col-12 col-sm-6 q-px-sm" v-for="(item,key) in list" :key="key">
         <TutorialItem :item="item" :index="key+1"/>
       </div>
     </div>
@@ -21,10 +21,10 @@ export default {
   data() {
     return {
       list: [
-        {url: 'videos/1.webm', description: "Introducción a LoveApp"},
-        {url: 'videos/2.webm', description: "Crear un producto"},
-        {url: 'videos/3.webm', description: "Imprimir etiquetas"},
-        {url: 'videos/4.webm', description: "Editar un producto"},
+        {url: 'videos/crear-productos.webm', description: "Crear un producto"},
+        {url: 'videos/apregar-productos-stock.webm', description: "Agregar productos al stock"},
+        {url: 'videos/otras-formas-vender-producto.webm', description: "Otras formas de vender productos"},
+        {url: 'videos/incidentes-y-estadisticas.webm', description: "Incidentes y estadísticas"},
       ]
     }
   }

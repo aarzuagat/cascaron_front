@@ -94,6 +94,7 @@ export default {
       obj.products_id = this.incident.products.map(i => i.id)
       const saved = await postIncident(obj)
       this.adding = false;
+      this.$emit('update')
     },
     cleanAll() {
       this.incident = {

@@ -8,7 +8,7 @@
               <q-icon name="mdi-view-dashboard" color="white"/>
             </div>
             <div class="col q-pl-md text-white text-left">
-              <span>Dashboard</span>
+              <span>Inicio</span>
             </div>
           </div>
         </q-btn>

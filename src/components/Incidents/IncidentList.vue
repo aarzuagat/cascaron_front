@@ -4,9 +4,9 @@
       <MyTitle title="Lista de incidentes"/>
     </div>
     <div class="col-12 text-right">
-      <IncidentAdd/>
+      <IncidentAdd @update="findIncidents"/>
     </div>
-    <div class="col-12" v-if="incidents.length">
+    <div class="col-12 q-pt-sm" v-if="incidents.length">
       <div class="row text-white bb">
         <div class="col-1">No.</div>
         <div class="col">Causante</div>
@@ -47,7 +47,6 @@ export default {
   methods: {
     async findIncidents() {
       this.incidents = await getIncidents()
-      console.log(this.incidents)
     }
   },
   mounted() {

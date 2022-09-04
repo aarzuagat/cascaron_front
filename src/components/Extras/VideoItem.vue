@@ -2,7 +2,7 @@
   <q-video
     :ratio="ratio"
     :src="fullUrl"
-
+    autoplay="false"
   />
 </template>
 
