@@ -1,6 +1,7 @@
 import security from "src/router/modules/security";
 import operations from "src/router/modules/operations";
 import incidents from "src/router/modules/incidents";
+import tutorial from "src/router/modules/tutorial";
 
 const routes = [
   {
@@ -11,7 +12,8 @@ const routes = [
       {path: 'stock', name: 'stock', component: () => import('pages/Stock/Stock')},
       ...security,
       ...operations,
-      ...incidents
+      ...incidents,
+      ...tutorial
     ]
   },
 

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <q-btn dense no-caps @click="selling = true" flat text-color="white" color="red"
+    <q-btn dense no-caps @click="selling = true" flat text-color="white" color="red" class="full-width"
            align="left">
       <q-icon name="fa fa-dollar-sign" color="red" size="sm"/>
-      <q-tooltip>Vender producto</q-tooltip>
+      <span class="q-pl-sm">Vender producto</span>
     </q-btn>
     <q-dialog ref="mymodal" v-model="selling"
               @before-hide="cleanSearch"

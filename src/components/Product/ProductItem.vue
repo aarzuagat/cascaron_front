@@ -9,10 +9,10 @@
                 <img :src="image"/>
               </q-avatar>
             </div>
-            <div class="col">
+            <div class="col" style="height: 6rem">
               <span class="text-white">{{ product.name }}</span>
-              <br><span class="text-white">{{ product.description.slice(0, 10) || '-' }}</span>
-              <br><span class="text-red text-bold q-mt-md">{{ formatterCurrency(sell_price) }}</span>
+              <br><span class="text-white ellipsis-2-lines"  >{{ product.description }}</span>
+              <span class="text-red text-bold q-mt-md absolute-bottom text-right q-pr-md q-pb-sm">{{ formatterCurrency(sell_price) }}</span>
             </div>
             <div class="col-auto">
               <q-btn color="white" round flat class="absolute-top-right" icon="more_vert" v-if="logged">
@@ -33,12 +33,16 @@
                       @updated="$emit('updated')"
                       :categories_all="categories_all"
                     />
-                    <ProductSellB :lite_mode="true" :product="product" v-if="user && user.role_id < 3"
+                    <ProductSellB  :product="product" v-if="user && user.role_id < 3"
                                   class="col-12 borderx"/>
                     <StockAdd
                       v-if="user && user.role_id === 1"
                       :product-new="product"
                       class="col-12 borderx"
+                    />
+                    <TagPrint
+                    :product="product"
+                    :product_mode="true"
                     />
                   </div>
                 </q-popup-proxy>
@@ -58,7 +62,7 @@ import ProductEdit from "components/Product/ProductEdit";
 import TagPrint from "components/Product/TagPrint";
 import {mapGetters} from "vuex";
 import ProductDelete from "components/Product/ProductDelete";
-import ProductSellB from "components/Product/ProductSellB";
+import ProductSellB from "components/Sell/ProductSellB";
 
 export default {
   components: {ProductSellB, ProductDelete, TagPrint, ProductEdit, StockAdd},

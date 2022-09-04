@@ -30,7 +30,7 @@
 import {formatCurrency, formatDate} from "src/utils/utils";
 import TagPrint from "components/Product/TagPrint";
 import {mapGetters} from "vuex";
-import ProductSellC from "components/Product/ProductSellC";
+import ProductSellC from "components/Sell/ProductSellC";
 
 export default {
   components: {ProductSellC,  TagPrint},

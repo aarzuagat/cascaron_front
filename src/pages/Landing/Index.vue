@@ -26,7 +26,7 @@ import ProductAdd from "components/Product/ProductAdd";
 import {mapGetters} from "vuex";
 import ProductSearch from "components/Product/ProductSearch";
 import {getCategories} from "src/store/Category/categories";
-import ProductSell from "components/Product/ProductSell";
+import ProductSell from "components/Sell/ProductSell";
 
 export default {
   name: 'PageIndex',

@@ -92,7 +92,7 @@ import StockSubstract from "components/Stock/StockSubstract";
 import ProductEdit from "components/Product/ProductEdit";
 import StockItem from "components/Stock/StockItem";
 import {mapGetters} from "vuex";
-import ProductSellB from "components/Product/ProductSellB";
+import ProductSellB from "components/Sell/ProductSellB";
 
 export default {
   components: {ProductSellB,  StockItem, ProductEdit, StockSubstract, StockAdd},

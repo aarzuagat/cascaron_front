@@ -26,24 +26,12 @@
           <StockListButton/>
           <ProductSellA :menu_mode="true" @updated="$emit('updated')"/>
           <ProductSearch :categories="categories" :menu_mode="true"/>
-          <q-btn class="full-width"  dense no-caps @click="$router.push({name:'operations'})" flat text-color="white" color="red"
-                 align="left">
-            <q-icon name="mdi-format-list-checks" color="white" size="sm"/>
-            <span class="q-pl-sm">Operaciones</span>
-          </q-btn>
-          <q-btn class="full-width"  dense no-caps @click="$router.push({name:'statics'})" flat text-color="white" color="red"
-                 align="left">
-            <q-icon name="mdi-chart-bar" color="white" size="sm"/>
-            <span class="q-pl-sm">Estadísticas</span>
-          </q-btn>
-          <q-btn class="full-width"  dense no-caps @click="$router.push({name:'incident'})" flat text-color="white" color="red"
-                 align="left">
-            <q-icon name="mdi-format-list-text" color="white" size="sm"/>
-            <span class="q-pl-sm">Incidentes</span>
-          </q-btn>
+          <MenuItem icon="mdi-format-list-checks" title="Operaciones" path-name="operations"/>
+          <MenuItem icon="mdi-chart-bar" title="Estadísticas" path-name="statics"/>
+          <MenuItem icon="mdi-format-list-text" title="Incidentes" path-name="incident"/>
+          <MenuItem icon="mdi-youtube-tv" title="Tutorial" path-name="tutorial"/>
         </div>
       </q-expansion-item>
-
     </div>
   </div>
 </template>
@@ -52,10 +40,11 @@
 import {mapGetters} from "vuex";
 import ProductSearch from "components/Product/ProductSearch";
 import StockListButton from "components/Stock/StockListButton";
-import ProductSellA from "components/Product/ProductSellA";
+import ProductSellA from "components/Sell/ProductSellA";
+import MenuItem from "components/Layout/MenuItem";
 
 export default {
-  components: {ProductSellA, StockListButton, ProductSearch},
+  components: {MenuItem, ProductSellA, StockListButton, ProductSearch},
   // name: 'ComponentName',
   computed: {
     ...mapGetters({
